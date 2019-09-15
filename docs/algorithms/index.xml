@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Algorithms on Filecoin Spec</title>
+    <link>/docs/algorithms/</link>
+    <description>Recent content in Algorithms on Filecoin Spec</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/docs/algorithms/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Expected Consensus</title>
+      <link>/docs/algorithms/expected_consensus/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/algorithms/expected_consensus/</guid>
+      <description>This spec describes how the expected consensus (EC) protocol works in general. To read more about Filecoin-specific processes, see:
+ Mining Blocks on how consensus is used in block mining. Faults on slashing. Storage market on how the power table is created and maintained. Block data structure for details on fields and encoding.  Important concepts and definitions Some important concepts relevant to expected consensus are:
+ Verifiable Delay Function (VDF) Verifiable Random Function (VRF) TipSet Ticket Ticket Chain Height  In the realm of EC, it is worth noting that a new ticket must be produced at every height, and consequently the duration of a round is bounded by the duration of the Verifiable Delay Function that is run to generate a ticket.</description>
+    </item>
+    
+    <item>
+      <title>Payment Channels</title>
+      <link>/docs/algorithms/payment_channels/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/algorithms/payment_channels/</guid>
+      <description>Payment Channels In order for the Filecoin Markets to work in a timely manner, we need to be able to have off-chain payments. This is a solved problem (at least, for our purposes in v0). Payment channels have been implemented and used in bitcoin, ethereum and many other networks.
+The basic premise is this: User A wants to be able to send many small payments to user B. So user A locks up money in a contract that says &amp;ldquo;this money will only go to user B, and the unclaimed amount will be returned to user A after a set time period&amp;rdquo;.</description>
+    </item>
+    
+    <item>
+      <title>Proof of Replication</title>
+      <link>/docs/algorithms/proof_of_replication/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/algorithms/proof_of_replication/</guid>
+      <description>This section describes the specific Proof-of-Replication used in Filecoin called ZigZag. In this construction, the prover encodes the original data into a replica and commits to it. An offline PoRep proves that the commitment to the replica is a valid commitment of the encoded original data.
+ZigZag has been presented by Ben Fisch at EUROCRYPT19.
+Introduction Background on Proof-of-Replication Proof-of-Replication enables a prover P to convince a verifier V that P is storing a replica R, a physically independent copy of some data D, unique to P.</description>
+    </item>
+    
+    <item>
+      <title>Proof of Spacetime</title>
+      <link>/docs/algorithms/proof_of_spacetime/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/algorithms/proof_of_spacetime/</guid>
+      <description>This document describes Rational-PoSt, the Proof-of-Spacetime used in Filecoin.
+Rational PoSt Definitions    Name Value Description     POST_PROVING_PERIOD 2880 blocks (~24h) The time interval in which a PoSt has to be submitted.   POST_CHALLENGE_TIME 240 blocks (~2h) The time offset at which the actual work of generating the PoSt can not be started earlier than. This is some delta before the end of the Proving Period, and as such less then a single Proving Period.</description>
+    </item>
+    
+    <item>
+      <title>Verifiable Delay Functions</title>
+      <link>/docs/algorithms/vdf/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/algorithms/vdf/</guid>
+      <description>TODO: finish</description>
+    </item>
+    
+  </channel>
+</rss>

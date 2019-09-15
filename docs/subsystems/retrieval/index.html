@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    
+    Retrieval Market
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+
+
+<link rel="alternate" type="application/rss+xml" href="../../../docs/subsystems/retrieval/index.xml" title="Filecoin Spec" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../css/syntax.css">
+<link href="../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2fsubsystems\2fretrieval\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    
+    Retrieval Market
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+
+<h2 id="components">Components</h2>
+
+<p>Version 0 of the <code>retrieval market</code> protocol is what we (tentatively) will launch the filecoin network with. It is version zero because it will only be good enough to fit the bill as a way to pay another node for a file.</p>
+
+<p>The main components are as follows:</p>
+
+<ul>
+<li>A payment channel actor (See <a href="payment-channels.md">payment channels</a> for details)</li>
+<li>&lsquo;retrieval-v0&rsquo; <code>libp2p</code> services</li>
+<li>A chain-based content routing interface</li>
+<li>A set of commands to interact with the above</li>
+</ul>
+
+<h2 id="retrieval-v0-libp2p-services">Retrieval V0 <code>libp2p</code> Services</h2>
+
+<p>The v0 <code>retrieval market</code> will initially be implemented as two <code>libp2p</code> services. It will be request response based, where the client who is requesting a file sends a <code>retrieval deal proposal</code> to the miner. The miner chooses whether or not to accept it, sends their response which (if they accept the proposal) includes a <code>signed retrieval deal</code>, followed by the actual requested content, streamed as a series of bitswap block messages, using a pre-order traversal of the dag. Each block should use the <a href="https://github.com/ipfs/go-bitswap/blob/c980d7ed36f278e93828acf920f3a911e8263265/message/message.go#L228">bitswap block message format</a>. This way, the client should be able to verify the data incrementally as it receives it. Once the client has received all the data, it should then send a payment channel SpendVoucher of the proposed amount to the miner. This protocol may be easily extended to include payments from the client to the miner every N blocks, but for now we omit that feature.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> RetDealProposal struct <span class="o">{</span>
+	<span class="c1">## Reference to the data being retrieved.</span>
+	ref Link
+
+	<span class="c1">## The total amount that the client is willing to pay for the retrieval of the data.</span>
+	price TokenAmount
+
+	<span class="c1">## The info from the client to the retrieval miner for the data</span>
+	payment PaymentInfo
+<span class="o">}</span>
+
+<span class="nb">type</span> RetDealResponse union <span class="o">{</span>
+    <span class="p">|</span> AcceptedResponse <span class="m">0</span>
+    <span class="p">|</span> RejectedResponse <span class="m">1</span>
+    <span class="p">|</span> ErrorResponse <span class="m">2</span>
+<span class="o">}</span> representation keyed
+
+<span class="nb">type</span> AcceptedResponse struct <span class="o">{}</span>
+<span class="nb">type</span> RejectedResponse struct <span class="o">{</span>
+    message optional String
+<span class="o">}</span>
+
+<span class="nb">type</span> ErrorResponse RejectedResponse
+
+<span class="nb">type</span> Block struct <span class="o">{</span>
+	<span class="c1">## Cid prefix parameters for this block. It describes how to</span>
+	<span class="c1">## hash the block to verify it matches the expected value.</span>
+	refix CidPrefix
+	data Bytes
+<span class="o">}</span>
+
+<span class="c1">## Represents all the metadata of a Cid.</span>
+<span class="c1">## It does not contains  any actual content information.</span>
+<span class="nb">type</span> CidPrefix struct <span class="o">{</span>
+	version  UInt
+	codec    UInt
+	mhType   UInt
+	mhLength UInt
+<span class="o">}</span></code></pre></div>
+<p><code>Retrieval miners</code> should also support a query service that allows clients to request pricing information from a miner.</p>
+
+<p>The query should include the CID of the piece that the client is interested in retrieving. The response contains whether or not the miner will serve that data, the price they will accept for it.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> RetQuery struct <span class="o">{</span>
+    <span class="c1">## TODO: what exactly does this link to?</span>
+	piece Link
+<span class="o">}</span>
+
+<span class="nb">type</span> RetQueryResponse union <span class="o">{</span>
+    <span class="p">|</span> AvailableResponse
+    <span class="p">|</span> UnavailableResponse
+<span class="o">}</span> representation keyed
+
+<span class="nb">type</span> AvailableResponse struct <span class="o">{</span>
+	minPrice TokenAmount
+<span class="o">}</span>
+
+<span class="nb">type</span> UnavailableResponse struct <span class="o">{}</span></code></pre></div>
+<h2 id="chain-based-content-routing">Chain Based Content Routing</h2>
+
+<p>For the version 0 protocol. We should implement a small helper service that looks up which miners have a given piece based on deals made in the blockchain. The service should first look the content up in the blockchain (or in some client index) to find the chain address of the miner, then use the lookup service to map that to a <code>libp2p</code> <code>peerID</code> and <code>multiaddr</code>.</p>
+
+<p>The interface should match the exist libp2p content routing interface:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">ChainContentRouting</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">FindProvidersAsync</span><span class="p">(</span><span class="nx">ref</span> <span class="nx">Cid</span><span class="p">,</span> <span class="nx">count</span> <span class="kt">int</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="nx">pstore</span><span class="p">.</span><span class="nx">PeerInfo</span>
+<span class="p">}</span></code></pre></div>
+<h2 id="retrieval-market-commands">Retrieval Market Commands</h2>
+
+<p>We will need to add a few commands to allow the user to interact with the <code>retrieval market</code>, and for developers to be able to script higher level applications on top of it.</p>
+
+<p>The command names here are not final, and are definitely subject to change later on once we are able to sit and think through proper UX.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">USAGE
+  filecoin retr get &lt;piece-cid&gt; - Retrieve a piece from a miner.
+
+SYNOPSIS
+  filecoin retr get [--price=&lt;amt&gt;] [--miner=&lt;peerID&gt;] [--] &lt;piece-cid&gt;
+
+ARGUMENTS
+
+  &lt;piece-cid&gt; - Content ID of piece to retrieve.
+
+OPTIONS
+
+  --price                string - Amount of filecoin to offer for this data.
+  --miner                string - Optional Peer ID of miner to connect to. (If unspecified, the chain routing service will be used)</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">USAGE
+  filecoin retr lookup &lt;piece-cid&gt; - Print a list of miners who have the given piece.
+
+SYNOPSIS
+  filecoin retr lookup [--sort=&lt;sorttype&gt;] [--] &lt;piece-cid&gt;
+
+ARGUMENTS
+
+  &lt;piece-cid&gt;... - Content ID of piece to find.
+
+OPTIONS
+
+  --sort                string - Output sorting scheme.</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">USAGE
+  filecoin retr query &lt;minerID&gt; [&lt;piece-cid&gt;] - Query the given retrieval miner.
+
+SYNOPSIS
+  filecoin retr query [--] &lt;miner-id&gt; [&lt;piece-cid&gt;]
+
+ARGUMENTS
+
+  &lt;miner-id&gt;  - ID of miner to query.
+  [&lt;piece-cid&gt;] - Optional cid of piece to query for.</code></pre></div>
+<h2 id="retrieve-piece-for-free">Retrieve Piece for Free</h2>
+
+<ul>
+<li><strong>Name</strong>: Retrieve Piece for Free</li>
+<li><strong>Protocol ID</strong>: <code>/fil/retrieval/free/0.0.0</code></li>
+</ul>
+
+<blockquote>
+<p>The Retrieve Piece for Free protocol is used to coordinate the transfer of a piece from miner to client at no cost to the client.</p>
+</blockquote>
+
+<p>The client initiates the protocol by opening a libp2p stream to the miner. To find and connect to the miner, the <a href="lookup-service.md">address lookup service</a> should be used. Once connected, the client must send the miner a <code>RetrievePieceRequest</code> message.</p>
+
+<p>When the miner receives the request, it responds with a <code>RetrievePieceResponse</code> message indicating that it has accepted or rejected the request.</p>
+
+<p>If the miner does not accept the request, it sends a <code>RetrievePieceResponseFailure</code>, with the <code>message</code> field set to indicate a reason for the request being rejected.</p>
+
+<p>If the miner accepts the request, it sends a <code>RetrievePieceResponseSuccess</code>. Then the miner sends the client ordered <code>RetrievePieceChunk</code> messages until all of the piece&rsquo;s data has been transferred, at which point the miner closes the stream.</p>
+
+<p>Note: The client must be able to reconstruct a piece by concatenating the <code>Data</code>-bytes in the order that they were received.</p>
+
+<p>Note: The miner divides the piece in to chunks containing a maximum of <code>256 &lt;&lt; 8</code> bytes due to a limitation in our software which caps the size of CBOR-encoded messages at <code>256 &lt;&lt; 10</code> bytes.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> RetrievePieceRequest struct <span class="o">{</span>
+	<span class="c1">## Identifier of user data, typically received from the client while consummating a storage deal.</span>
+	pieceRef String
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> RetrievePieceResponse union <span class="o">{</span>
+    <span class="c1">## Success means that the piece can be retrieved from the miner.</span>
+    <span class="p">|</span> RetrievePieceResponseSuccess <span class="m">0</span>
+	<span class="c1">## Failure indicates that the piece can not be retrieved from the miner.</span>
+    <span class="p">|</span> RetrievePieceResponseFailure <span class="m">1</span>
+<span class="o">}</span> representation keyed
+
+<span class="nb">type</span> RetrievePieceResponseSuccess struct <span class="o">{}</span>
+
+<span class="nb">type</span> RetrievePieceResponseFailure struct <span class="o">{</span>
+	<span class="c1">## A string explaining the cause for the rejection.</span>
+	message string
+<span class="o">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="c1">##  A chunk of a piece. The length must be &gt; 0.</span>
+<span class="nb">type</span> RetrievePieceChunk Bytes</code></pre></div></article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+  <aside class="book-toc fixed">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#components">Components</a></li>
+<li><a href="#retrieval-v0-libp2p-services">Retrieval V0 <code>libp2p</code> Services</a></li>
+<li><a href="#chain-based-content-routing">Chain Based Content Routing</a></li>
+<li><a href="#retrieval-market-commands">Retrieval Market Commands</a></li>
+<li><a href="#retrieve-piece-for-free">Retrieve Piece for Free</a></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    Sharded IPLD Array
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../css/syntax.css">
+<link href="../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2f appendix\2fsharray\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    Sharded IPLD Array
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+  
+
+<p>The Sharray is an IPLD tree structure used to store an array of items. It is designed for usecases that know all items at the time of creation and do not need insertion or deletion.</p>
+
+<h2 id="ipld-representation">IPLD Representation</h2>
+
+<p>Each sharray node is represented by an IPLD node of the following schema:</p>
+
+<pre><code>type Node struct {
+  height Int
+  items [Item]
+} representation tuple
+</code></pre>
+
+<p><code>Item</code> may be either a direct value, if <code>height == 0</code>, or the Cid of a child node if <code>height &gt; 0</code>.</p>
+
+<p>(For details on IPLD Schemas, see the <a href="https://github.com/ipld/specs/blob/dcbfb25468092be796bab90e90e3f2535fdeddc7/schema/representations.md">IPLD Schema Spec (draft)</a>)</p>
+
+<p>We use DAG-CBOR for serialization, and blake2b-256 for hashing.</p>
+
+<h2 id="construction">Construction</h2>
+
+<p>The tree must not be sparse.
+Given an array of size <code>N</code> and a fixed width of <code>W</code>.
+- The left <code>floor(N/W)</code> leaves contain the first <code>N</code> items.
+- If <code>N % W != 0</code> the final leaf contains the final remainder.
+- The tree is perfectly balanced.
+- The height is the distance from the leaves, not the root.
+- Leaves (nodes with a height of 0) contain array values.
+- Inner nodes (nodes with height greater than zero) contain the cids of their child nodes.</p>
+
+<h2 id="operations">Operations</h2>
+
+<h4 id="create-items"><code>create(items)</code></h4>
+
+<blockquote>
+<p>Create a sharray from a given set of items</p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">create</span><span class="p">(</span><span class="nx">items</span> <span class="p">[]</span><span class="nx">Item</span><span class="p">)</span> <span class="nx">Cid</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">layer</span> <span class="nx">cidQueue</span>
+
+    <span class="nx">itemQ</span> <span class="o">:=</span> <span class="nf">queue</span><span class="p">(</span><span class="nx">items</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">!</span><span class="nx">itemQ</span><span class="p">.</span><span class="nf">Empty</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// get the next &#39;Width&#39; items from the input items
+</span><span class="c1"></span>        <span class="nx">vals</span> <span class="o">:=</span> <span class="nx">itemQ</span><span class="p">.</span><span class="nf">PopN</span><span class="p">(</span><span class="nx">width</span><span class="p">)</span>
+
+        <span class="nx">nd</span> <span class="o">:=</span> <span class="nx">Node</span><span class="p">{</span>
+            <span class="nx">height</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">items</span><span class="p">:</span>  <span class="nx">vals</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1">// persist the node to the datastore
+</span><span class="c1"></span>        <span class="nf">storeNode</span><span class="p">(</span><span class="nx">nd</span><span class="p">)</span>
+
+        <span class="nx">layer</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">nd</span><span class="p">.</span><span class="nf">Cid</span><span class="p">())</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">nextLayer</span> <span class="nx">cidQueue</span>
+    <span class="k">for</span> <span class="nx">height</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">layer</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">height</span><span class="o">++</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="nx">layer</span><span class="p">.</span><span class="nf">Len</span><span class="p">()</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nx">vals</span> <span class="o">:=</span> <span class="nx">layer</span><span class="p">.</span><span class="nf">PopN</span><span class="p">(</span><span class="nx">width</span><span class="p">)</span>
+
+            <span class="nx">nd</span> <span class="o">:=</span> <span class="nx">Node</span><span class="p">{</span>
+                <span class="nx">height</span><span class="p">:</span> <span class="nx">height</span><span class="p">,</span>
+                <span class="nx">items</span><span class="p">:</span>  <span class="nx">vals</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="nf">storeNode</span><span class="p">(</span><span class="nx">nd</span><span class="p">)</span>
+
+            <span class="nx">nextLayer</span><span class="p">.</span><span class="nb">append</span><span class="p">(</span><span class="nx">nd</span><span class="p">.</span><span class="nf">Cid</span><span class="p">())</span>
+        <span class="p">}</span>
+        <span class="nx">layer</span> <span class="p">=</span> <span class="nx">nextLayer</span>
+        <span class="nx">nextLayer</span><span class="p">.</span><span class="nf">ClearItems</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">nextLayer</span><span class="p">.</span><span class="nf">First</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="get-i"><code>get(i)</code></h4>
+
+<blockquote>
+<p>Get the element at index <code>i</code></p>
+</blockquote>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">n</span> <span class="nx">node</span><span class="p">)</span> <span class="nf">get</span><span class="p">(</span><span class="nx">i</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">Item</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Height</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="nx">childWidth</span> <span class="o">:=</span> <span class="nf">Pow</span><span class="p">(</span><span class="nx">Width</span><span class="p">,</span> <span class="nx">n</span><span class="p">.</span><span class="nx">Height</span><span class="p">)</span>
+
+    <span class="nx">child</span> <span class="o">:=</span> <span class="nf">loadNode</span><span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">Array</span><span class="p">[</span><span class="nx">i</span><span class="o">/</span><span class="nx">childWidth</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nx">child</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="nx">childWidth</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+  <aside class="book-toc fixed">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#ipld-representation">IPLD Representation</a></li>
+<li><a href="#construction">Construction</a></li>
+<li><a href="#operations">Operations</a>
+<ul>
+<li>
+<ul>
+<li><a href="#create-items"><code>create(items)</code></a></li>
+<li><a href="#get-i"><code>get(i)</code></a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

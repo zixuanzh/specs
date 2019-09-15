@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    Key Concepts
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../css/syntax.css">
+<link href="../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2fintro\2f concepts\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    Key Concepts
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+  <p>For clarity, we refer the following types of entities to describe implementations of the Filecoin protocol:</p>
+
+<ul>
+<li><p><strong><em>Data structures</em></strong> are collections of semantically-tagged data members (e.g., structs, interfaces, or enums).</p></li>
+
+<li><p><strong><em>Functions</em></strong> are computational procedures that do not depend on external state (i.e., mathematical functions,
+or programming language functions that do not refer to global variables).</p></li>
+
+<li><p><strong><em>Components</em></strong> are sets of functionality that are intended to be represented as single software units
+in the implementation structure.
+Depending on the choice of language and the particular component, this might
+correspond to a single software module,
+a thread or process running some main loop, a disk-backed database, or a variety of other design choices.
+For example, the <a href="../../../#subsystems__blockchain__components__block_propagator">Block Propagator</a> is a component: it could be implemented
+as a process or thread running a single specified main loop, which waits for network messages
+and responds accordingly by recording and/or forwarding block data.</p></li>
+
+<li><p><strong><em>APIs</em></strong> are messages that can be sent to components.
+A client&rsquo;s view of a given sub-protocol, such as a request to a miner node&rsquo;s
+<a href="../../../#subsystems__storage__components__storage_provider">Storage Provider</a> component to store files in the storage market,
+may require the execution of a series of APIs.</p></li>
+
+<li><p><strong><em>Nodes</em></strong> are complete software and hardware systems that interact with the protocol.
+A node might be constantly running several of the above <em>components</em>, participating in several <em>subsystems</em>,
+and exposing <em>APIs</em> locally and/or over the network,
+depending on the node configuration.
+The term <em>full node</em> refers to a system that runs all of the above components, and supports all of the APIs detailed in the spec.</p></li>
+
+<li><p><strong><em>Subsystems</em></strong> are conceptual divisions of the entire Filecoin protocol, either in terms of complete protocols
+(such as the <a href="../../../#subsystems__storage">Storage Market</a> or <a href="../../../#subsystems__retrieval">Retrieval Market</a>), or in terms of functionality
+(such as the <a href="../../../#subsystems__vm">Filecoin VM</a>). They do not necessarily correspond to any particular node or software component.</p></li>
+
+<li><p><strong><em>Actors</em></strong> are virtual entities embodied in the state of the Filecoin VM.
+Protocol actors are analogous to participants in smart contracts;
+an actor carries a FIL currency balance and can interact with other actors
+via the operations of the VM, but does not necessarily correspond to any particular node or software component.</p></li>
+</ul>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

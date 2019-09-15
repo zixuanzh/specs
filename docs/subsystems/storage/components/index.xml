@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Storage Market Components on Filecoin Spec</title>
+    <link>/docs/subsystems/storage/components/</link>
+    <description>Recent content in Storage Market Components on Filecoin Spec</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/docs/subsystems/storage/components/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Storage Provider</title>
+      <link>/docs/subsystems/storage/components/storage_provider/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/subsystems/storage/components/storage_provider/</guid>
+      <description>TODO</description>
+    </item>
+    
+  </channel>
+</rss>

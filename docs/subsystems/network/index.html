@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    
+    Network Interface
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+
+
+<link rel="alternate" type="application/rss+xml" href="../../../docs/subsystems/network/index.xml" title="Filecoin Spec" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../css/syntax.css">
+<link href="../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2fsubsystems\2fnetwork\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    
+    Network Interface
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+
+<h2 id="message-transport">Message Transport</h2>
+
+<p>Filecoin uses <a href="https://libp2p.io">libp2p</a> for all network communications. libp2p provides transport-agnostic services for peer discovery, naming, routing, pubsub channels and a distributed record store, and there are full or partial <a href="https://libp2p.io/implementations/">implementations</a> in a number of languages. This spec assumes the use of libp2p and its services and does not specify transport-level details. That said, to be at least minimally compatible with other Filecoin nodes, it must support at least the <a href="https://github.com/libp2p/specs/tree/master/mplex">mplex</a> stream multiplexer, and the <a href="TODO, spec in PR">secio</a> encrypted transport protocols. For more details on the exact wire protocol of libp2p, refer to the <a href="https://github.com/libp2p/specs">libp2p specs</a>.</p>
+
+<p>Filecoin uses <a href="https://ipld.io">IPLD</a> for the representation and serialization of the majority of the data in the system. IPLD provides a canonical model for content-addressed data structures, providing a representation of basic data objects and links between them.</p>
+
+<p>All filecoin network protocols are implemented as libp2p protocols. This document will assume that all data is communicated between peers on a libp2p stream.</p>
+
+<h2 id="ipld-dag-cbor-rpc">Ipld dag-cbor RPC</h2>
+
+<p>Filecoin uses many pre-existing protocols from ipfs and libp2p, and also implements several new protocols of its own. For these Filecoin specific protocols, we will use the Ipld dag-cbor RPC protocol format, defined below.</p>
+
+<p>This format consists of series of IPLD objects, serialized using <code>dag-cbor</code>. Whenever a filecoin protocol says &ldquo;send X&rdquo;, it means &ldquo;IPLD serialize the object X using <code>dag-cbor</code>, then write the serialized bytes&rdquo;.</p>
+
+<div class="notices Note" ><strong>Note:</strong> Implementations should limit the maximum number of bytes when reading IPLD objects from the wire. We suggest <code>1MB</code> as a sane limit.</div>
+
+<p><strong>Links</strong></p>
+
+<ul>
+<li>Ipld: <a href="https://github.com/ipld/specs/">https://github.com/ipld/specs/</a></li>
+<li>dag-cbor: <a href="https://github.com/ipld/specs/blob/master/block-layer/codecs/DAG-CBOR.md">https://github.com/ipld/specs/blob/master/block-layer/codecs/DAG-CBOR.md</a></li>
+</ul>
+
+<h2 id="required-protocols">Required Protocols</h2>
+
+<p>Every full node must support the following libp2p protocols:</p>
+
+<ul>
+<li><a href="https://github.com/libp2p/specs/tree/master/pubsub/gossipsub">gossipsub</a> (<a href="data-propagation.md">for data announcements</a>)</li>
+<li><a href="[for data exchange](data-propagation.md)">bitswap</a></li>
+<li>Filecoin specific Protocols:
+
+<ul>
+<li>Hello Handshake</li>
+<li>StorageDeal</li>
+<li>BlockSync</li>
+</ul></li>
+</ul>
+
+<h2 id="transports-streams-encryption">Transports, Streams &amp; Encryption</h2>
+
+<p>Connections between nodes are end-to-end-encrypted and -authenticated, thus every node has a <code>peerId</code> associated with it.</p>
+
+<p>Filecoin protocols are run as multiple streams over a single connection. Only one connection should exist between two nodes at any time, multiple streams within that connections must be used to exchange different protocols. This is usually handled from within the libp2p stack if configured properly.</p>
+
+<p>This document doesn&rsquo;t make any assumptions on which transports and multiplexing features a particular node offers, however it must at least be able to respond and communicate through mplex channels via a secio transport.</p>
+
+<div class="notices info" >Implementers are encouraged to offer and experiment with more protocols and transports, as long as the above mentioned requirements of ee2e, authentication and muxing are still met. In particular the authors encourage to look into TLS1.3 and QUIC as libp2p protocol/transport layers.</div>
+
+<h3 id="establishing-connections">Establishing connections</h3>
+
+<p>When a Filecoin node connects to the network, it may connect to multiple nodes at once. When a new node connects, it must be greeted with the <code>HelloMessage</code> through the hello-handshake protocol first. Only after that message has been sent can other streams be opened. If a node receives a <code>HelloMessage</code> with a GenesisBlock it doesn&rsquo;t support, it must immediately close the entire connection to that peer.</p>
+
+<p>If the node learns through that handshake about newer blocks it should use that new information to sync up their chain.</p>
+
+<h3 id="syncing">Syncing</h3>
+
+<p>Whenever a node learns about a new <code>BlockHead</code> it should attempt to import the block - let that be through the <code>HelloMessage</code> or through the <a href="data-propagation.md#block-propagation">block pubsub protocol</a>. For that it may fetch the ancestors of that block through bitswap until it is fully caught up. Importing in this context refers to the node confirming that the block is valid, as described in <a href="validation.md">Validation</a> and storing it locally. This mode is known as &ldquo;syncing&rdquo;. During &ldquo;syncing&rdquo; the same node may not mine blocks.</p>
+
+<h2 id="establishing-a-network">Establishing a network</h2>
+
+<p>Every node should aim to establish a set of stable connections to the network in order to stay up to date with latest changes and block propagation - aka to sync - as well as to participate in the processes of the network - e.g. mining.</p>
+
+<p>In order to do that a node must be &ldquo;bootstrapped&rdquo; when starting up. At its simplest, bootstrapping can be thought of as secure network joining. It must enable a new node to get the latest head/chain that the majority of the network power is mining off and must be both:</p>
+
+<ul>
+<li>Robust — able to do so in adversarial networks (so long as honest nodes make up the majority of the network).</li>
+<li>Consistent — able to reliably get the canonical chain (even given poor latency or state loss in our initial peer set).</li>
+</ul>
+
+<p>The specific bootstrapping method and heuristic - or a mix of them - is left up to the node implementation, but we provide some example ideas of how this could be done and what aspects should be taken into consideration for that, such as relying on both new nodes and new connections to ensure a node is connected to both a reliable and representative slice of the network</p>
+
+<h3 id="trusted-bootnodes">Trusted bootnodes</h3>
+
+<p>As with many other networks, trusted entities - e.g. the Filecoin foundation, large exchanges, good actors in the community, etc - might publish a set of bootnodes one can connect to in order to establish network connections.</p>
+
+<p>Keep in mind that, because these could easily be DoS&rsquo;ed, a) large set of different entities should be pre-shipped but only a few should be tried at a time b) they might drop connections rather quickly after establishing (and ban that peer for a short period of time) in order to serve more nodes. Thus you want to make sure to send a discovery request to learn about more peers over the bootnodes to have nodes to connect to.</p>
+
+<p>A node should not attempt to connect to more than 10 bootnodes at a time. And should diversify its set of nodes as quickly as possible.</p>
+
+<h3 id="previously-known-nodes">Previously known nodes</h3>
+
+<p>It is generally preferred that an implementation keeps permanent track of reliable peers and attempts to connect to them upon restart. This can be a simple list of previously established connections or the blow listed ranked reputation list.</p>
+
+<h3 id="peer-discovery-requests">Peer Discovery requests</h3>
+
+<p>At this point the specification does not decide upon any particular peer discovery mechanism but leaves this up for the implementations to decide which ones they want to provide. However, the expectation is that all boot nodes provide some form peer discovery mechanism and publish that information along side the connectivity information. Whether that be BRAHMS or through RandomQueries of KADEMLIA-DHT, any node bootstrapping itself, should attempt to establish streams for peer discovery and may not fail just because their peer declines the given protocol stream.</p>
+
+<p>On the other side, the attempt to establish an unsupported peer-discovery protocol must not - in and of itself - lead to a disconnect, as multiple protocols might be tried. Any protocol may only be tried once on the same connection however.</p>
+
+<h2 id="maintaining-a-stable-network">Maintaining a stable network</h2>
+
+<p>Many aspects of the network topology assume some degree of liveness for filecoin to work. Thus and for it to work most efficiently, we aim for an overall stable network, that still allows for new nodes to join the network without interrupting.</p>
+
+<p>In order to achieve that every node should aim for &ldquo;future usefulness of peers&rdquo; as outline below. However, as a general rule, if a node acts in violation of a <code>must</code> rule, any peer aware of that is totally in their right to drop any connection to the node without further warning. It may also keep a record of these offenses ban the peer from connecting again, if it finds them to continue offending. Such ban may be imposed upon - in increasing order - the peerId, on the IP+Port or finally the IP itself. One must keep in mind that IP addresses still rotate and thus every implementation must add a maximum timeout should they impose a ban on them, while PeerIDs can also be banned indefinitely.</p>
+
+<h3 id="optimise-for-usefulness-of-peers">Optimise for usefulness of peers</h3>
+
+<p>A more sophisticated system to manage a healthy peer set is through optimising for usefulness of that peer to the node. in this system a node tracks all incoming messages and their costs in relation to the value it provided to them and records them as value any particular node provides to it - called &ldquo;reputation&rdquo;. These calculations may also take into account time that passed or whether the other node would have to know about the uselessness of a particular message. Sending a useless message, in this system, is not understood as a hard violation, but as impolite behaviour and can be recorded as such. Thus creating a ranking by usefulness among the peer set.</p>
+
+<p>An example would be that, continuously receive a pubsub message from a node after we&rsquo;ve forwarded it to them prior. This isn&rsquo;t a hard failure, as though they aren&rsquo;t supposed to do that, we can&rsquo;t know if that is because of a faulty implementation or because of network delays queuing their message. However, we&rsquo;d still note this as impolite and for every time this happens deduct from their reputation as it isn&rsquo;t useful to us.</p>
+
+<p>A node attempts to always hold a certain amount of connections (&ldquo;slots&rdquo;) to the network &ndash; we recommend 25-50 on an on-the-shelf system. Whenever a new node connects, it can check their previously stored reputation or assign a default value and if that reputation is higher than the lowest currently connected nodes, may replace that connection (and thus drop the lowest quality connection) or otherwise refuse to take that connection.</p>
+
+<p>In this system a node might also only record a strong decrease in reputation but not drop a connection to a peer directly even upon a strong violation, because the node may still be more useful than others. It is better to stay connected to a crappy network than to no network. However, this doesn&rsquo;t not free the node from still adhering to the spec itself - it should not forward said violation or its connection might still be righteously dropped.</p>
+
+<p>We also recommend to regularly check the ranking and drop and clear up the lowest 10% of slots, leaving 5% open for incoming connections and fill up the other 5% by connecting to other nodes it can find through peer discovery.</p>
+
+<p>All this to create a local view of for that node most useful connections to the network. The reputation may be stored permanently and be available between restarts - thus providing a neat bootstrap start list, too.</p>
+
+<h2 id="hello-handshake">Hello Handshake</h2>
+
+<ul>
+<li><strong>Name</strong>: Hello</li>
+<li><strong>Protocol ID</strong>: <code>/fil/hello/1.0.0</code></li>
+</ul>
+
+<blockquote>
+<p>The Hello protocol is used when two filecoin nodes initially connect to each other in order to determine information about the other node.</p>
+</blockquote>
+
+<p>Whenever a node gets a new connection, it opens a new stream on that connection and &ldquo;says hello&rdquo;. This is done by crafting a <code>HelloMessage</code>, sending it to the other peer using CBOR RPC and finally, closing the stream.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> HelloMessage struct <span class="o">{</span>
+	heaviestTipSet <span class="o">[</span><span class="p">&amp;</span>Block<span class="o">]</span>
+	heaviestTipSetWeight UInt
+	genesisHash <span class="p">&amp;</span>Block
+<span class="o">}</span></code></pre></div>
+<p>Upon receiving a &ldquo;hello&rdquo; stream from another node, you should read off the CBOR RPC message, and then check that the genesis hash matches you genesis hash. If it does not, that node is not part of your network, and should probably be disconnected from. Next, the <code>HeaviestTipSet</code>, claimed <code>HeaviestTipSetWeight</code>, and peerID of the other node should be passed to the chain sync subsystem.</p>
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+  <aside class="book-toc fixed">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#message-transport">Message Transport</a></li>
+<li><a href="#ipld-dag-cbor-rpc">Ipld dag-cbor RPC</a></li>
+<li><a href="#required-protocols">Required Protocols</a></li>
+<li><a href="#transports-streams-encryption">Transports, Streams &amp; Encryption</a>
+<ul>
+<li><a href="#establishing-connections">Establishing connections</a></li>
+<li><a href="#syncing">Syncing</a></li>
+</ul></li>
+<li><a href="#establishing-a-network">Establishing a network</a>
+<ul>
+<li><a href="#trusted-bootnodes">Trusted bootnodes</a></li>
+<li><a href="#previously-known-nodes">Previously known nodes</a></li>
+<li><a href="#peer-discovery-requests">Peer Discovery requests</a></li>
+</ul></li>
+<li><a href="#maintaining-a-stable-network">Maintaining a stable network</a>
+<ul>
+<li><a href="#optimise-for-usefulness-of-peers">Optimise for usefulness of peers</a></li>
+</ul></li>
+<li><a href="#hello-handshake">Hello Handshake</a></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    Proof Generator
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../../../favicon.png" type="image/x-icon">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../../../css/syntax.css">
+<link href="../../../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2fsubsystems\2fmining\2f components\2fproof_generator\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    Proof Generator
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+  
+
+<p>Block miners should constantly be performing Proofs of SpaceTime, and also checking if they have a winning <code>ticket</code> to propose a block at each height/in each round. Rounds are currently set to take around 30 seconds, in order to account for network propagation around the world. The details of both processes are defined here.</p>
+
+<h2 id="the-miner-actor">The Miner Actor</h2>
+
+<p>After successfully calling <code>CreateStorageMiner</code>, a miner actor will be created on-chain, and registered in the storage market. This miner, like all other Filecoin State Machine actors, has a fixed set of methods that can be used to interact with or control it.</p>
+
+<p>For details on the methods on the miner actor, see its entry in the <a href="../actors#storage-miner-actor">actors spec</a>.</p>
+
+<h3 id="owner-worker-distinction">Owner Worker distinction</h3>
+
+<p>The miner actor has two distinct &lsquo;controller&rsquo; addresses. One is the worker, which is the address which will be responsible for doing all of the work, submitting proofs, committing new sectors, and all other day to day activities. The owner address is the address that created the miner, paid the collateral, and has block rewards paid out to it. The reason for the distinction is to allow different parties to fulfil the different roles. One example would be for the owner to be a multisig wallet, or a cold storage key, and the worker key to be a &lsquo;hot wallet&rsquo; key.</p>
+
+<h3 id="storage-mining-cycle">Storage Mining Cycle</h3>
+
+<p>Storage miners must continually produce Proofs of SpaceTime over their storage to convince the network that they are actually storing the sectors that they have committed to. Each PoSt covers a miner&rsquo;s entire storage.</p>
+
+<h4 id="step-0-registration">Step 0: Registration</h4>
+
+<p>To initially become a miner, a miner first register a new miner actor on-chain. This is done through the storage market actor&rsquo;s <a href="../actors#createstorageminer"><code>CreateStorageMiner</code></a> method. The call will then create a new miner actor instance and return its address.</p>
+
+<p>The next step is to place one or more storage market asks on the market. This is done through the storage markets <a href="../actors#addask"><code>AddAsk</code></a> method. A miner may create a single ask for their entire storage, or partition their storage up in some way with multiple asks (at potentially different prices).</p>
+
+<p>After that, they need to make deals with clients and begin filling up sectors with data. For more information on making deals, see the section on <a href="../storage-market#deal">deal</a>.</p>
+
+<p>When they have a full sector, they should seal it. This is done by invoking <a href="../proofs#seal"><code>PoRep.Seal</code></a> on the sector.</p>
+
+<h4 id="step-1-commit">Step 1: Commit</h4>
+
+<p>When the miner has completed their first seal, they should post it on-chain using <a href="../actors#commitsector">CommitSector</a>. If the miner had zero committed sectors prior to this call, this begins their proving period.</p>
+
+<p>The proving period is a fixed amount of time in which the miner must submit a Proof of Space Time to the network.</p>
+
+<p>During this period, the miner may also commit to new sectors, but they will not be included in proofs of space time until the next proving period starts.
+For example, if a miner currently PoSts for 10 sectors, and commits to 20 more sectors. The next PoSt they submit (i.e. the one they&rsquo;re currently proving) will be for 10 sectors again, the subsequent one will be for 30.</p>
+
+<p>TODO: sectors need to be globally unique. This can be done either by having the seal proof prove the sector is unique to this miner in some way, or by having a giant global map on-chain is checked against on each submission. As the system moves towards sector aggregation, the latter option will become unworkable, so more thought needs to go into how that proof statement could work.</p>
+
+<h4 id="step-2-proving-storage-post-creation">Step 2: Proving Storage (PoSt creation)</h4>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ProveStorage</span><span class="p">(</span><span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">sectors</span> <span class="p">[]</span><span class="nx">commR</span><span class="p">)</span> <span class="nx">PoStProof</span> <span class="p">{</span>
+    <span class="nx">challengeBlockHeight</span> <span class="o">:=</span> <span class="nx">miner</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="o">-</span> <span class="nx">POST_CHALLENGE_TIME</span>
+
+    <span class="c1">// Faults to be used are the currentFaultSet for the miner.
+</span><span class="c1"></span>    <span class="nx">faults</span> <span class="o">:=</span> <span class="nx">miner</span><span class="p">.</span><span class="nx">currentFaultSet</span>
+    <span class="nx">seed</span> <span class="o">:=</span> <span class="nf">GetRandFromBlock</span><span class="p">(</span><span class="nx">challengeBlockHeight</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nf">GeneratePoSt</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">sectors</span><span class="p">,</span> <span class="nx">seed</span><span class="p">,</span> <span class="nx">faults</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<p>Note: See <a href="../proof-of-spacetime">&lsquo;Proof of Space Time&rsquo;</a> for more details.</p>
+
+<p>The proving set remains consistent during the proving period. Any sectors added in the meantime will be included in the next proving set, at the beginning of the next proving period.</p>
+
+<h4 id="step-3-post-submission">Step 3: PoSt Submission</h4>
+
+<p>When the miner has completed their PoSt, they must submit it to the network by calling <a href="../actors#submitpost">SubmitPoSt</a>. There are two different times that this <em>could</em> be done.</p>
+
+<ol>
+<li><strong>Standard Submission</strong>: A standard submission is one that makes it on-chain before the end of the proving period. The length of time it takes to compute the PoSts is set such that there is a grace period between then and the actual end of the proving period, so that the effects of network congestion on typical miner actions is minimized.</li>
+<li><strong>Penalized Submission</strong>: A penalized submission is one that makes it on-chain after the end of the proving period, but before the generation attack threshold. These submissions count as valid PoSt submissions, but the miner must pay a penalty for their late submission. (See &lsquo;<a href="../faults">Faults</a>&rsquo; for more information)
+
+<ul>
+<li>Note: In this case, the next PoSt should still be started at the beginning of the proving period, even if the current one is not yet complete. Miners must submit one PoSt per proving period.</li>
+</ul></li>
+</ol>
+
+<p>Along with the PoSt submission, miners may also submit a set of sectors that they wish to remove from their proving set. This is done by selecting the sectors in the &lsquo;done&rsquo; bitfield passed to <code>SubmitPoSt</code>.</p>
+
+<h3 id="stop-mining">Stop Mining</h3>
+
+<p>In order to stop mining, a miner must complete all of its storage contracts, and remove them from their proving set during a PoSt submission. A miner may then call <a href="../actors#depledge"><code>DePledge()</code></a> to retrieve their collateral. <code>DePledge</code> must be called twice, once to start the cooldown, and once again after the cooldown to reclaim the funds. The cooldown period is to allow clients whose files have been dropped by a miner to slash them before they get their money back and get away with it.</p>
+
+<h3 id="faults">Faults</h3>
+
+<p>Faults are described in the <a href="../faults">faults document</a>.</p>
+
+<h3 id="on-being-slashed-wip-needs-discussion">On Being Slashed (WIP, needs discussion)</h3>
+
+<p>If a miner is slashed for failing to submit their PoSt on time, they currently lose all their pledge collateral. They do not necessarily lose their storage collateral. Storage collateral is lost when a miner&rsquo;s clients slash them for no longer having the data. Missing a PoSt does not necessarily imply that a miner no longer has the data. There should be an additional timeout here where the miner can submit a PoSt, along with &lsquo;refilling&rsquo; their pledge collateral. If a miner does this, they can continue mining, their mining power will be reinstated, and clients can be assured that their data is still there.</p>
+
+<p>TODO: disambiguate the two collaterals across the entire spec</p>
+
+<p>Review Discussion Note: Taking all of a miners collateral for going over the deadline for PoSt submission is really really painful, and is likely to dissuade people from even mining filecoin in the first place (If my internet going out could cause me to lose a very large amount of money, that leads to some pretty hard decisions around profitability). One potential strategy could be to only penalize miners for the amount of sectors they could have generated in that timeframe.</p>
+
+<h3 id="future-work">Future Work</h3>
+
+<p>There are many ideas for improving upon the storage miner, here are ideas that may be potentially implemented in the future.</p>
+
+<ul>
+<li><strong>Sector Resealing</strong>: Miners should be able to &rsquo;re-seal&rsquo; sectors, to allow them to take a set of sectors with mostly expired pieces, and combine the not-yet-expired pieces into a single (or multiple) sectors.</li>
+<li><strong>Sector Transfer</strong>: Miners should be able to re-delegate the responsibility of storing data to another miner. This is tricky for many reasons, and will not be implemented in the initial release of Filecoin, but could provide interesting capabilities down the road.</li>
+</ul>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+  <aside class="book-toc fixed">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#the-miner-actor">The Miner Actor</a>
+<ul>
+<li><a href="#owner-worker-distinction">Owner Worker distinction</a></li>
+<li><a href="#storage-mining-cycle">Storage Mining Cycle</a>
+<ul>
+<li><a href="#step-0-registration">Step 0: Registration</a></li>
+<li><a href="#step-1-commit">Step 1: Commit</a></li>
+<li><a href="#step-2-proving-storage-post-creation">Step 2: Proving Storage (PoSt creation)</a></li>
+<li><a href="#step-3-post-submission">Step 3: PoSt Submission</a></li>
+</ul></li>
+<li><a href="#stop-mining">Stop Mining</a></li>
+<li><a href="#faults">Faults</a></li>
+<li><a href="#on-being-slashed-wip-needs-discussion">On Being Slashed (WIP, needs discussion)</a></li>
+<li><a href="#future-work">Future Work</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

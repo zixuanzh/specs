@@ -1,0 +1,3644 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    VM Interpreter
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../../../favicon.png" type="image/x-icon">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../../../css/syntax.css">
+<link href="../../../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2fsubsystems\2fvm\2f components\2fvm_interpreter\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    VM Interpreter
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+  
+
+<h3 id="sending-funds">Sending Funds</h3>
+
+<p>As all messages carry a method ID, the method ID &lsquo;0&rsquo; is reserved for simple
+transfers of funds. Funds specified by the value field are always transferred,
+but specifying a method ID of &lsquo;0&rsquo; ensures that no other side effects occur.</p>
+
+<h3 id="state-representation">State Representation</h3>
+
+<p>The <code>global state</code> is modeled as a map of actor <code>ID</code>s to actor structs. This map is implemented by an ipld HAMT (TODO: link to spec for our HAMT) with the &lsquo;key&rsquo; being the serialized ID address (every actor has an ID address that can be looked up via the <code>InitActor</code>), and the value is an <a href="../data-structures#actor"><code>Actor</code></a> object with the actors information. Within each <code>Actor</code> object is a field called <code>state</code> that is an ipld pointer to a graph that can be entirely defined by the actor.</p>
+
+<h3 id="actor-creation">Actor Creation</h3>
+
+<p>There are two mechanisms by which an actor can be created. By explicitly invoking <code>exec</code> on the <code>Init</code> actor, and by sending a message to a <code>Public Key</code> typed <code>Address</code>.</p>
+
+<p>Calling <code>exec</code> to create an actor should generate an Actor address, and register it in the state tree (see <a href="../actors#init-actor">Init Actor</a> for more details).</p>
+
+<p>Sending a message to a non-existant account via a public key address causes the creation of an account actor for that address. The <code>To</code> address should be placed into the actor storage for later use in validating messages sent from this actor.</p>
+
+<p>This second route for creating an actor is allowed to avoid the necessity of an explicit &lsquo;register account&rsquo; step for creating new accounts.</p>
+
+<h3 id="execution-calling-a-method-on-an-actor">Execution (Calling a method on an Actor)</h3>
+
+<p>Message execution currently relies entirely on &lsquo;built-in&rsquo; code, with a common external interface. The method and actor to call it on are specified in the <code>Method</code> and <code>To</code> fields of a message, respectively. Method parameters are encoded and put into the <code>Params</code> field of a message. The encoding is technically actor dependent, but for all built-in Filecoin actors it is the dag-cbor ipld encoding of the parameters struct for each method defined in <a href="../actors">the actors doc</a>.</p>
+
+<p>These functions are given, as input, an <code>ExecutionContext</code> containing useful information for their execution.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">VMContext</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="c1">// Message is the message that kicked off the current invocation
+</span><span class="c1"></span>    <span class="nf">Message</span><span class="p">()</span> <span class="nx">Message</span>
+
+    <span class="c1">// Storage provides access to the VM storage layer
+</span><span class="c1"></span>    <span class="nf">Storage</span><span class="p">()</span> <span class="nx">Storage</span>
+
+    <span class="c1">// Origin is the address of the account that initiated the top level invocation
+</span><span class="c1"></span>    <span class="nf">Origin</span><span class="p">()</span> <span class="nx">Address</span>
+
+    <span class="c1">// Send allows the current execution context to invoke methods on other actors in the system
+</span><span class="c1"></span>    <span class="nf">Send</span><span class="p">(</span><span class="nx">to</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">method</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">AttoFIL</span><span class="p">,</span> <span class="nx">params</span> <span class="p">[]</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">([][]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">uint8</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+
+    <span class="c1">// BlockHeight returns the height of the block this message was added to the chain in
+</span><span class="c1"></span>    <span class="nf">BlockHeight</span><span class="p">()</span> <span class="nx">BlockHeight</span>
+<span class="p">}</span></code></pre></div>
+<p>If the execution completes successfully, changes to the state tree are saved. Otherwise, the message is marked as failed, and any state changes are reverted.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ApplyMessage</span><span class="p">(</span><span class="nx">st</span> <span class="nx">StateTree</span><span class="p">,</span> <span class="nx">msg</span> <span class="nx">Message</span><span class="p">)</span> <span class="nx">MessageReceipt</span> <span class="p">{</span>
+    <span class="nx">st</span><span class="p">.</span><span class="nf">Snapshot</span><span class="p">()</span>
+    <span class="nx">fromActor</span><span class="p">,</span> <span class="nx">found</span> <span class="o">:=</span> <span class="nx">st</span><span class="p">.</span><span class="nf">GetActor</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">found</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;no such from actor&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">totalCost</span> <span class="o">:=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span> <span class="o">+</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">GasLimit</span> <span class="o">*</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">GasPrice</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">fromActor</span><span class="p">.</span><span class="nx">Balance</span> <span class="p">&lt;</span> <span class="nx">totalCost</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not enough funds&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nf">Nonce</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">fromActor</span><span class="p">.</span><span class="nx">Nonce</span><span class="o">+</span><span class="mi">1</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;invalid nonce&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">toActor</span><span class="p">,</span> <span class="nx">found</span> <span class="o">:=</span> <span class="nx">st</span><span class="p">.</span><span class="nf">GetActor</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">To</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">found</span> <span class="p">{</span>
+        <span class="nx">toActor</span> <span class="p">=</span> <span class="nf">TryCreateAccountActor</span><span class="p">(</span><span class="nx">st</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">To</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">st</span><span class="p">.</span><span class="nf">DeductFunds</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">,</span> <span class="nx">totalCost</span><span class="p">)</span>
+    <span class="nx">st</span><span class="p">.</span><span class="nf">DepositFunds</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">To</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span><span class="p">)</span>
+
+    <span class="nx">vmctx</span> <span class="o">:=</span> <span class="nf">makeVMContext</span><span class="p">(</span><span class="nx">st</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Method</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nx">ret</span><span class="p">,</span> <span class="nx">errcode</span> <span class="o">:=</span> <span class="nx">toActor</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="nx">vmctx</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">errcode</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="c1">// revert all state changes since snapshot
+</span><span class="c1"></span>            <span class="nx">st</span><span class="p">.</span><span class="nf">Revert</span><span class="p">()</span>
+            <span class="nx">st</span><span class="p">.</span><span class="nf">DeductFunds</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">,</span> <span class="nx">vmctx</span><span class="p">.</span><span class="nf">GasUsed</span><span class="p">()</span><span class="o">*</span><span class="nx">msg</span><span class="p">.</span><span class="nx">GasPrice</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// refund unused gas
+</span><span class="c1"></span>            <span class="nx">st</span><span class="p">.</span><span class="nf">DepositFunds</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">,</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">GasLimit</span><span class="o">-</span><span class="nx">vmctx</span><span class="p">.</span><span class="nf">GasUsed</span><span class="p">())</span><span class="o">*</span><span class="nx">msg</span><span class="p">.</span><span class="nx">GasPrice</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// reward miner gas fees
+</span><span class="c1"></span>    <span class="nx">st</span><span class="p">.</span><span class="nf">DepositFunds</span><span class="p">(</span><span class="nx">BlockMiner</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">GasPrice</span><span class="o">*</span><span class="nx">vmctx</span><span class="p">.</span><span class="nf">GasUsed</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="nx">MessageReceipt</span><span class="p">{</span>
+        <span class="nx">ExitCode</span><span class="p">:</span> <span class="nx">errcode</span><span class="p">,</span>
+        <span class="nx">Return</span><span class="p">:</span>   <span class="nx">ret</span><span class="p">,</span>
+        <span class="nx">GasUsed</span><span class="p">:</span>  <span class="nx">vmctx</span><span class="p">.</span><span class="nf">GasUsed</span><span class="p">(),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">TryCreateAccountActor</span><span class="p">(</span><span class="nx">st</span> <span class="nx">StateTree</span><span class="p">,</span> <span class="nx">addr</span> <span class="nx">Address</span><span class="p">)</span> <span class="nx">Actor</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="nx">addr</span><span class="p">.</span><span class="nf">Type</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">BLS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nf">NewBLSAccountActor</span><span class="p">(</span><span class="nx">addr</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nx">Secp256k1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nf">NewSecp256k1AccountActor</span><span class="p">(</span><span class="nx">addr</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nx">ID</span><span class="p">:</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;no actor with given ID&#34;</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nx">Actor</span><span class="p">:</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;no such actor&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="receipts">Receipts</h4>
+
+<p>Every message execution generates a <a href="../data-structures#message-receipt">receipt</a>. These receipts contain the encoded return value of the method invocation, and an exit code.</p>
+
+<h4 id="storage">Storage</h4>
+
+<p>Actors are given acess to a <code>Storage</code> interface to fulfil their need for persistent storage. The <code>Storage</code> interface describes a content addressed block storage system (<code>Put</code> and <code>Get</code>) and a pointer into it (<code>Head</code> and <code>Commit</code>) that points to the actor&rsquo;s current state.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Storage</span> <span class="kd">interface</span> <span class="p">{</span>
+    <span class="c1">// Put writes the given object to the storage staging area and returns its CID
+</span><span class="c1"></span>    <span class="nf">Put</span><span class="p">(</span><span class="kd">interface</span><span class="p">{})</span> <span class="p">(</span><span class="nx">Cid</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+
+    <span class="c1">// Get fetches the given object from storage (either staging, or local) and returns
+</span><span class="c1"></span>    <span class="c1">// the serialized data.
+</span><span class="c1"></span>    <span class="nf">Get</span><span class="p">(</span><span class="nx">Cid</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+
+    <span class="c1">// Commit updates the actual stored state for the actor. This is a compare and swap
+</span><span class="c1"></span>    <span class="c1">// operation, and will fail if &#39;old&#39; is not equal to the current return value of `Head`.
+</span><span class="c1"></span>    <span class="c1">// This functionality is used to prevent issues with re-entrancy
+</span><span class="c1"></span>    <span class="nf">Commit</span><span class="p">(</span><span class="nx">old</span> <span class="nx">Cid</span><span class="p">,</span> <span class="nx">new</span> <span class="nx">Cid</span><span class="p">)</span> <span class="kt">error</span>
+
+    <span class="c1">// Head returns the CID of the current actor state
+</span><span class="c1"></span>    <span class="nf">Head</span><span class="p">()</span> <span class="nx">Cid</span>
+<span class="p">}</span></code></pre></div>
+<p>Actors can store state as a single block or implement any persistent
+data structure that can be built upon a content addressed block store.
+Implementations may provide data structure implementations to simplify
+development. The current interface only supports CBOR-IPLD, but this
+should soon expand to allow other types of IPLD data structures (as long
+as the system has resolvers for them).</p>
+
+<p>The current state of a given actor can be accessed first by calling <code>Head</code> to retrieve the CID of the root of the actors state, then by using <code>Get</code> to retrieve the actual object being referenced.</p>
+
+<p>To store data, <code>Put</code> is used. Any number of objects may be <code>Put</code>, but only the object whose CID is committed, or objects that are linked to in some way by the committed object will be kept. All other objects are dropped after the method invocation returns. Objects stored via <code>Put</code> are first marshaled to CBOR-IPLD, and then stored, the returned CID is a 32 byte sha2-256 CBOR-IPLD content identifier.</p>
+
+<h3 id="burning-funds">Burning Funds</h3>
+
+<p>In the case that an actor needs to provably burn funds, the funds should be transferred to the &lsquo;Burnt Funds Actor&rsquo; (ID 99).</p>
+
+<h2 id="filecoin-state-machine-actors">Filecoin State Machine Actors</h2>
+
+<p>Any implementations of the Filecoin actors must be exactly byte for byte compatible with the go-filecoin actor implementations. The pseudocode below tries to capture the important logic, but capturing all the detail would require embedding exactly the code from go-filecoin, so for now, its simply informative pseudocode. The algorithms below are correct, and all implementations much match it (including go-filecoin), but details omitted from here should be looked for in the go-filecoin code.</p>
+
+<p>This spec describes a set of actors that operate within the <a href="../state-machine">Filecoin State Machine</a>. All types are defined in <a href="../data-structures#basic-type-encodings">the basic type encoding spec</a>.</p>
+
+<h2 id="actor-state">Actor State</h2>
+
+<p>Each actor type defines their own structure for storing their state. We
+represent each with an IPLD schema at the beginning of each actor section in
+this document.</p>
+
+<h2 id="system-actors">System Actors</h2>
+
+<p>Some state machine actors are &lsquo;system&rsquo; actors that get instantiated in the genesis block, and have their IDs allocated at that point.</p>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Actor</th>
+<th>Name</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0</td>
+<td>InitActor</td>
+<td>Network Init</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>AccountActor</td>
+<td>Network Treasury</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>StorageMarketActor</td>
+<td>Filecoin Storage Market</td>
+</tr>
+
+<tr>
+<td>99</td>
+<td>AccountActor</td>
+<td>Burnt Funds</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="built-in-actors">Built In Actors</h2>
+
+<h3 id="init-actor">Init Actor</h3>
+
+<ul>
+<li><strong>Code Cid</strong>: <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;init&quot;&gt;</code></li>
+</ul>
+
+<p>The init actor is responsible for creating new actors on the filecoin network. This is a built-in actor and cannot be replicated. In the future, this actor will be responsible for loading new code into the system (for user programmable actors). ID allocation for user instantiated actors starts at 100. This means that <code>NextID</code> will initially be set to 100.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> InitActorState struct <span class="o">{</span>
+    addressMap <span class="o">{</span>Address:ID<span class="o">}</span>&lt;Hamt&gt;
+    nextId UInt
+<span class="o">}</span></code></pre></div>
+<h4 id="methods">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>Constructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>Exec</code></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td><code>GetIdForAddress</code></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="constructor"><code>Constructor</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> InitConstructor struct <span class="o">{</span>
+<span class="o">}</span></code></pre></div>
+<p><strong>Algorithm</strong></p>
+
+<h4 id="exec"><code>Exec</code></h4>
+
+<p>This method is the core of the <code>Init Actor</code>. It handles instantiating new actors and assigning them their IDs.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Exec struct <span class="o">{</span>
+    <span class="c1">## Reference to the location at which the code of the actor to create is stored.</span>
+    code <span class="p">&amp;</span>Code
+    <span class="c1">## Parameters passed to the constructor of the actor.</span>
+    params ActorMethod
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Exec</span><span class="p">(</span><span class="nx">code</span> <span class="nx">Cid</span><span class="p">,</span> <span class="nx">params</span> <span class="nx">ActorMethod</span><span class="p">)</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="c1">// Get the actor ID for this actor.
+</span><span class="c1"></span>    <span class="nx">actorID</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">NextID</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">NextID</span><span class="o">++</span>
+
+    <span class="c1">// Make sure that only the actors defined in the spec can be launched.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">!</span><span class="nf">IsBuiltinActor</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot launch actor instance that is not a builtin actor&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Ensure that singeltons can be only launched once.
+</span><span class="c1"></span>    <span class="c1">// TODO: do we want to enforce this? If so how should actors be marked as such?
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">IsSingletonActor</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot launch another actor of this type&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// This generates a unique address for this actor that is stable across message
+</span><span class="c1"></span>    <span class="c1">// reordering
+</span><span class="c1"></span>    <span class="c1">// TODO: where do `creator` and `nonce` come from?
+</span><span class="c1"></span>    <span class="nx">addr</span> <span class="o">:=</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">ComputeActorAddress</span><span class="p">(</span><span class="nx">creator</span><span class="p">,</span> <span class="nx">nonce</span><span class="p">)</span>
+
+    <span class="c1">// Set up the actor itself
+</span><span class="c1"></span>    <span class="nx">actor</span> <span class="o">:=</span> <span class="nx">Actor</span><span class="p">{</span>
+        <span class="nx">Code</span><span class="p">:</span>    <span class="nx">code</span><span class="p">,</span>
+        <span class="nx">Balance</span><span class="p">:</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span>
+        <span class="nx">Head</span><span class="p">:</span>    <span class="kc">nil</span><span class="p">,</span>
+        <span class="nx">Nonce</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The call to the actors constructor will set up the initial state
+</span><span class="c1"></span>    <span class="c1">// from the given parameters, setting `actor.Head` to a new value when successfull.
+</span><span class="c1"></span>    <span class="c1">// TODO: can constructors fail?
+</span><span class="c1"></span>    <span class="nx">actor</span><span class="p">.</span><span class="nf">Constructor</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span>
+
+    <span class="nx">VM</span><span class="p">.</span><span class="nx">GlobalState</span><span class="p">.</span><span class="nf">Set</span><span class="p">(</span><span class="nx">actorID</span><span class="p">,</span> <span class="nx">actor</span><span class="p">)</span>
+
+    <span class="c1">// Store the mapping of address to actor ID.
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">AddressMap</span><span class="p">[</span><span class="nx">addr</span><span class="p">]</span> <span class="p">=</span> <span class="nx">actorID</span>
+
+    <span class="k">return</span> <span class="nx">addr</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">IsSingletonActor</span><span class="p">(</span><span class="nx">code</span> <span class="nx">Cid</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">code</span> <span class="o">==</span> <span class="nx">StorageMarketActor</span> <span class="o">||</span> <span class="nx">code</span> <span class="o">==</span> <span class="nx">InitActor</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// TODO: find a better home for this logic
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">VM</span> <span class="nx">VM</span><span class="p">)</span> <span class="nf">ComputeActorAddress</span><span class="p">(</span><span class="nx">creator</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">nonce</span> <span class="nx">Integer</span><span class="p">)</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nf">NewActorAddress</span><span class="p">(</span><span class="nx">bytes</span><span class="p">.</span><span class="nf">Concat</span><span class="p">(</span><span class="nx">creator</span><span class="p">.</span><span class="nf">Bytes</span><span class="p">(),</span> <span class="nx">nonce</span><span class="p">.</span><span class="nf">BigEndianBytes</span><span class="p">()))</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getidforaddress"><code>GetIdForAddress</code></h4>
+
+<p>This method allows for fetching the corresponding ID of a given Address</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetIdForAddress struct <span class="o">{</span>
+    addr Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetIdForAddress</span><span class="p">(</span><span class="nx">addr</span> <span class="nx">Address</span><span class="p">)</span> <span class="nx">UInt</span> <span class="p">{</span>
+    <span class="nx">id</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">AddressMap</span><span class="p">[</span><span class="nx">addr</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nx">id</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nf">Fault</span><span class="p">(</span><span class="s">&#34;unknown address&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">id</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="account-actor">Account Actor</h3>
+
+<ul>
+<li><strong>Code Cid</strong>: <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;account&quot;&gt;</code></li>
+</ul>
+
+<p>The Account actor is the actor used for normal keypair backed accounts on the filecoin network.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> AccountActorState struct <span class="o">{</span>
+    address Address
+<span class="o">}</span></code></pre></div>
+<h4 id="methods-1">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>AccountConstructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>GetAddress</code></td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code>type AccountConstructor struct {
+}
+</code></pre>
+
+<h4 id="getaddress"><code>GetAddress</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetAddress struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetAddress</span><span class="p">()</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">address</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="storage-market-actor">Storage Market Actor</h3>
+
+<ul>
+<li><strong>Code Cid</strong>: <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;smarket&quot;&gt;</code></li>
+</ul>
+
+<p>The storage market actor is the central point for the Filecoin storage market. It is responsible for registering new miners to the system, and maintaining the power table. The Filecoin storage market is a singleton that lives at a specific well-known address.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> StorageMarketActorState struct <span class="o">{</span>
+    miners <span class="o">{</span>Address:Null<span class="o">}</span>&lt;Hamt&gt;
+    totalStorage BytesAmount
+<span class="o">}</span></code></pre></div>
+<h4 id="methods-2">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>StorageMarketConstructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>CreateStorageMiner</code></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td><code>SlashConsensusFault</code></td>
+<td>3</td>
+</tr>
+
+<tr>
+<td><code>UpdateStorage</code></td>
+<td>4</td>
+</tr>
+
+<tr>
+<td><code>GetTotalStorage</code></td>
+<td>5</td>
+</tr>
+
+<tr>
+<td><code>PowerLookup</code></td>
+<td>6</td>
+</tr>
+
+<tr>
+<td><code>IsMiner</code></td>
+<td>7</td>
+</tr>
+
+<tr>
+<td><code>StorageCollateralForSize</code></td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="constructor-1"><code>Constructor</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> StorageMarketConstructor struct <span class="o">{}</span></code></pre></div>
+<p><strong>Algorithm</strong></p>
+
+<h4 id="createstorageminer"><code>CreateStorageMiner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> CreateStorageMiner struct <span class="o">{</span>
+    worker Address
+    sectorSize BytesAmount
+    peerId PeerId
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">CreateStorageMiner</span><span class="p">(</span><span class="nx">worker</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">owner</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">pid</span> <span class="nx">PeerID</span><span class="p">)</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nf">SupportedSectorSize</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Unsupported sector size&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">newminer</span> <span class="o">:=</span> <span class="nx">InitActor</span><span class="p">.</span><span class="nf">Exec</span><span class="p">(</span><span class="nx">MinerActorCodeCid</span><span class="p">,</span> <span class="nf">EncodeParams</span><span class="p">(</span><span class="nx">worker</span><span class="p">,</span> <span class="nx">owner</span><span class="p">,</span> <span class="nx">pledge</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">pid</span><span class="p">))</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Miners</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">newminer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nx">newminer</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="slashconsensusfault"><code>SlashConsensusFault</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> SlashConsensusFault struct <span class="o">{</span>
+    block1 <span class="p">&amp;</span>Block
+    block2 <span class="p">&amp;</span>Block
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">shouldSlash</span><span class="p">(</span><span class="nx">block1</span><span class="p">,</span> <span class="nx">block2</span> <span class="nx">BlockHeader</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="c1">// First slashing condition, blocks have the same ticket round
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">sameTicketRound</span><span class="p">(</span><span class="nx">block1</span><span class="p">,</span> <span class="nx">block2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Second slashing condition, miner ignored own block when mining
+</span><span class="c1"></span>    <span class="c1">// Case A: block2 could have been in block1&#39;s parent set but is not
+</span><span class="c1"></span>    <span class="nx">block1ParentTipSet</span> <span class="o">:=</span> <span class="nf">parentOf</span><span class="p">(</span><span class="nx">block1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">block1Parent</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="nx">block2</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">block1ParentTipSet</span><span class="p">.</span><span class="nx">Height</span> <span class="o">==</span> <span class="nx">block2</span><span class="p">.</span><span class="nx">Height</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">block1ParentTipSet</span><span class="p">.</span><span class="nx">ParentCids</span> <span class="o">==</span> <span class="nx">block2</span><span class="p">.</span><span class="nx">ParentCids</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Case B: block1 could have been in block2&#39;s parent set but is not
+</span><span class="c1"></span>    <span class="nx">block2ParentTipSet</span> <span class="o">:=</span> <span class="nf">parentOf</span><span class="p">(</span><span class="nx">block2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">block2Parent</span><span class="p">.</span><span class="nf">contains</span><span class="p">(</span><span class="nx">block1</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">block2ParentTipSet</span><span class="p">.</span><span class="nx">Height</span> <span class="o">==</span> <span class="nx">block1</span><span class="p">.</span><span class="nx">Height</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">block2ParentTipSet</span><span class="p">.</span><span class="nx">ParentCids</span> <span class="o">==</span> <span class="nx">block1</span><span class="p">.</span><span class="nx">ParentCids</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">SlashConsensusFault</span><span class="p">(</span><span class="nx">block1</span><span class="p">,</span> <span class="nx">block2</span> <span class="nx">BlockHeader</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nf">ValidateSignature</span><span class="p">(</span><span class="nx">block1</span><span class="p">.</span><span class="nx">Signature</span><span class="p">)</span> <span class="o">||</span> <span class="p">!</span><span class="nf">ValidSignature</span><span class="p">(</span><span class="nx">block2</span><span class="p">.</span><span class="nx">Signature</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;invalid blocks&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nf">AuthorOf</span><span class="p">(</span><span class="nx">block1</span><span class="p">)</span> <span class="o">!=</span> <span class="nf">AuthorOf</span><span class="p">(</span><span class="nx">block2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;blocks must be from the same miner&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// see the &#34;Consensus Faults&#34; section of the faults spec (faults.md)
+</span><span class="c1"></span>    <span class="c1">// for details on these slashing conditions.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">!</span><span class="nf">shouldSlash</span><span class="p">(</span><span class="nx">block1</span><span class="p">,</span> <span class="nx">block2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;blocks do not prove a slashable offense&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">miner</span> <span class="o">:=</span> <span class="nf">AuthorOf</span><span class="p">(</span><span class="nx">block1</span><span class="p">)</span>
+
+    <span class="c1">// TODO: Some of the slashed collateral should be paid to the slasher
+</span><span class="c1"></span>
+    <span class="c1">// Burn all of the miners collateral
+</span><span class="c1"></span>    <span class="nx">miner</span><span class="p">.</span><span class="nf">BurnCollateral</span><span class="p">()</span>
+
+    <span class="c1">// Remove the miner from the list of network miners
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">Miners</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">miner</span><span class="p">)</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nf">UpdateStorage</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">miner</span><span class="p">.</span><span class="nx">Power</span><span class="p">)</span>
+
+    <span class="c1">// Now delete the miner (maybe this is a bit harsh, but i&#39;m okay with it for now)
+</span><span class="c1"></span>    <span class="nx">miner</span><span class="p">.</span><span class="nf">SelfDestruct</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="updatestorage"><code>UpdateStorage</code></h4>
+
+<p>UpdateStorage is used to update the global power table.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> UpdateStorage struct <span class="o">{</span>
+    delta BytesAmount
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">UpdateStorage</span><span class="p">(</span><span class="nx">delta</span> <span class="nx">BytesAmount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">Miners</span><span class="p">.</span><span class="nf">Has</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;update storage must only be called by a miner actor&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">TotalStorage</span> <span class="o">+=</span> <span class="nx">delta</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="gettotalstorage"><code>GetTotalStorage</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetTotalStorage struct <span class="o">{</span>
+
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetTotalStorage</span><span class="p">()</span> <span class="nx">BytesAmount</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">TotalStorage</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="powerlookup"><code>PowerLookup</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> PowerLookup struct <span class="o">{</span>
+    miner Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">PowerLookup</span><span class="p">(</span><span class="nx">miner</span> <span class="nx">Address</span><span class="p">)</span> <span class="nx">BytesAmount</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">Miners</span><span class="p">.</span><span class="nf">Has</span><span class="p">(</span><span class="nx">miner</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;miner not registered with storage market&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">mact</span> <span class="o">:=</span> <span class="nf">LoadMinerActor</span><span class="p">(</span><span class="nx">miner</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nx">mact</span><span class="p">.</span><span class="nf">GetPower</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="isminer"><code>IsMiner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> IsMiner struct <span class="o">{</span>
+    addr Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">IsMiner</span><span class="p">(</span><span class="nx">addr</span> <span class="nx">Address</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Miners</span><span class="p">.</span><span class="nf">Has</span><span class="p">(</span><span class="nx">miner</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="storagecollateralforsize"><code>StorageCollateralForSize</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> StorageCollateralForSize struct <span class="o">{</span>
+    size UInt
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">StorageCollateralforSize</span><span class="p">(</span><span class="nx">size</span> <span class="nx">UInt</span><span class="p">)</span> <span class="nx">TokenAmount</span> <span class="p">{</span>
+    <span class="c1">// TODO:
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<h2 id="storage-miner-actor">Storage Miner Actor</h2>
+
+<ul>
+<li><p><strong>Code Cid</strong>: <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;sminer&quot;&gt;</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> StorageMinerActorState struct <span class="o">{</span>
+<span class="c1">## contains mostly static info about this miner</span>
+info <span class="p">&amp;</span>MinerInfo
+
+
+<span class="c1">## Collateral that is waiting to be withdrawn.</span>
+dePledgedCollateral TokenAmount
+
+    <span class="c1">## Time at which the depledged collateral may be withdrawn.</span>
+dePledgeTime BlockHeight
+
+    <span class="c1">## All sectors this miner has committed.</span>
+sectors <span class="p">&amp;</span>SectorSet
+
+    <span class="c1">## Sectors this miner is currently mining. It is only updated</span>
+    <span class="c1">## when a PoSt is submitted (not as each new sector commitment is added).</span>
+provingSet <span class="p">&amp;</span>SectorSet
+
+<span class="c1">## Faulty sectors reported since last SubmitPost, up to the current proving period&#39;s challenge time.</span>
+currentFaultSet BitField
+
+<span class="c1">## Faults submitted after the current proving period&#39;s challenge time, but before the PoSt for that period</span>
+<span class="c1">## is submitted. These become the currentFaultSet when a PoSt is submitted.</span>
+nextFaultSet BitField
+
+    <span class="c1">## Sectors reported during the last PoSt submission as being &#39;done&#39;. The collateral</span>
+<span class="c1">## for them is still being held until the next PoSt submission in case early sector</span>
+<span class="c1">## removal penalization is needed.</span>
+nextDoneSet BitField
+
+    <span class="c1">## Deals this miner has been slashed for since the last post submission.</span>
+arbitratedDeals <span class="o">{</span>Cid:Null<span class="o">}</span>
+
+    <span class="c1">## Amount of power this miner has.</span>
+power UInt
+
+<span class="c1">## List of sectors that this miner was slashed for.</span>
+slashedSet optional <span class="p">&amp;</span>SectorSet
+
+<span class="c1">## The height at which this miner was slashed at.</span>
+slashedAt optional BlockHeight
+
+<span class="c1">## The amount of storage collateral that is owed to clients, and cannot be used for collateral anymore.</span>
+owedStorageCollateral TokenAmount
+
+provingPeriodEnd BlockHeight
+<span class="o">}</span>
+
+<span class="nb">type</span> MinerInfo struct <span class="o">{</span>
+    <span class="c1">## Account that owns this miner.</span>
+<span class="c1">## - Income and returned collateral are paid to this address.</span>
+<span class="c1">## - This address is also allowed to change the worker address for the miner.</span>
+owner Address
+
+    <span class="c1">## Worker account for this miner.</span>
+    <span class="c1">## This will be the key that is used to sign blocks created by this miner, and</span>
+    <span class="c1">## sign messages sent on behalf of this miner to commit sectors, submit PoSts, and</span>
+    <span class="c1">## other day to day miner activities.</span>
+worker Address
+
+<span class="c1">## Libp2p identity that should be used when connecting to this miner.</span>
+peerId PeerId
+
+<span class="c1">## Amount of space in each sector committed to the network by this miner.</span>
+sectorSize BytesAmount
+
+<span class="o">}</span></code></pre></div></li>
+</ul>
+
+<h4 id="methods-3">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>StorageMinerConstructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>CommitSector</code></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td><code>SubmitPost</code></td>
+<td>3</td>
+</tr>
+
+<tr>
+<td><code>SlashStorageFault</code></td>
+<td>4</td>
+</tr>
+
+<tr>
+<td><code>GetCurrentProvingSet</code></td>
+<td>5</td>
+</tr>
+
+<tr>
+<td><code>ArbitrateDeal</code></td>
+<td>6</td>
+</tr>
+
+<tr>
+<td><code>DePledge</code></td>
+<td>7</td>
+</tr>
+
+<tr>
+<td><code>GetOwner</code></td>
+<td>8</td>
+</tr>
+
+<tr>
+<td><code>GetWorkerAddr</code></td>
+<td>9</td>
+</tr>
+
+<tr>
+<td><code>GetPower</code></td>
+<td>10</td>
+</tr>
+
+<tr>
+<td><code>GetPeerID</code></td>
+<td>11</td>
+</tr>
+
+<tr>
+<td><code>GetSectorSize</code></td>
+<td>12</td>
+</tr>
+
+<tr>
+<td><code>UpdatePeerID</code></td>
+<td>13</td>
+</tr>
+
+<tr>
+<td><code>ChangeWorker</code></td>
+<td>14</td>
+</tr>
+
+<tr>
+<td><code>IsSlashed</code></td>
+<td>15</td>
+</tr>
+
+<tr>
+<td><code>IsLate</code></td>
+<td>16</td>
+</tr>
+
+<tr>
+<td><code>PaymentVerifyInclusion</code></td>
+<td>17</td>
+</tr>
+
+<tr>
+<td><code>PaymentVerifySector</code></td>
+<td>18</td>
+</tr>
+
+<tr>
+<td><code>AddFaults</code></td>
+<td>19</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="constructor-2"><code>Constructor</code></h4>
+
+<p>Along with the call, the actor must be created with exactly enough filecoin for the collateral necessary for the pledge.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> StorageMinerConstructor struct <span class="o">{</span>
+    worker Address
+    owner Address
+    sectorSize BytesAmount
+    peerId PeerId
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">StorageMinerActor</span><span class="p">(</span><span class="nx">worker</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">owner</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">pid</span> <span class="nx">PeerID</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">owner</span> <span class="p">=</span> <span class="nx">message</span><span class="p">.</span><span class="nx">From</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">worker</span> <span class="p">=</span> <span class="nx">worker</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">peerID</span> <span class="p">=</span> <span class="nx">pid</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">sectorSize</span> <span class="p">=</span> <span class="nx">sectorSize</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">sectors</span> <span class="p">=</span> <span class="nf">EmptySectorSet</span><span class="p">()</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">provingSet</span> <span class="p">=</span> <span class="nf">EmptySectorSet</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="commitsector"><code>CommitSector</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> CommitSector struct <span class="o">{</span>
+    sectorId SectorID
+    commD Bytes
+    commR Bytes
+    commRStar Bytes
+    proof SealProof
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+
+<div class="notices todo" >TODO: ValidatePoRep, EnsureSectorIsUnique, CollateralForSector, Commitment</div>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">CommitSector</span><span class="p">(</span><span class="nx">sectorID</span> <span class="nx">SectorID</span><span class="p">,</span> <span class="nx">commD</span><span class="p">,</span> <span class="nx">commR</span><span class="p">,</span> <span class="nx">commRStar</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">proof</span> <span class="nx">SealProof</span><span class="p">)</span> <span class="nx">SectorID</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">ValidatePoRep</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">comm</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">worker</span><span class="p">,</span> <span class="nx">proof</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;bad proof!&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// make sure the miner isnt trying to submit a pre-existing sector
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">EnsureSectorIsUnique</span><span class="p">(</span><span class="nx">comm</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;sector already committed!&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Power of the miner after adding this sector
+</span><span class="c1"></span>    <span class="nx">futurePower</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">power</span> <span class="o">+</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">sectorSize</span>
+    <span class="nx">collateralRequired</span> <span class="p">=</span> <span class="nf">CollateralForPower</span><span class="p">(</span><span class="nx">futurePower</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">collateralRequired</span> <span class="p">&gt;</span> <span class="nx">vm</span><span class="p">.</span><span class="nf">MyBalance</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not enough collateral&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Note: There must exist a unique index in the miner&#39;s sector set for each
+</span><span class="c1"></span>    <span class="c1">// sector ID. The `faults`, `recovered`, and `done` parameters of the
+</span><span class="c1"></span>    <span class="c1">// SubmitPoSt method express indices into this sector set.
+</span><span class="c1"></span>    <span class="nx">miner</span><span class="p">.</span><span class="nx">Sectors</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">sectorID</span><span class="p">,</span> <span class="nx">commR</span><span class="p">,</span> <span class="nx">commD</span><span class="p">)</span>
+
+    <span class="c1">// if miner is not mining, start their proving period now
+</span><span class="c1"></span>    <span class="c1">// Note: As written here, every miners first PoSt will only be over one sector.
+</span><span class="c1"></span>    <span class="c1">// We could set up a &#39;grace period&#39; for starting mining that would allow miners
+</span><span class="c1"></span>    <span class="c1">// to submit several sectors for their first proving period. Alternatively, we
+</span><span class="c1"></span>    <span class="c1">// could simply make the &#39;CommitSector&#39; call take multiple sectors at a time.
+</span><span class="c1"></span>    <span class="c1">//
+</span><span class="c1"></span>    <span class="c1">// Note: Proving period is a function of sector size; small sectors take less
+</span><span class="c1"></span>    <span class="c1">// time to prove than large sectors do. Sector size is selected when pledging.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">miner</span><span class="p">.</span><span class="nx">ProvingSet</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nx">miner</span><span class="p">.</span><span class="nx">ProvingSet</span> <span class="p">=</span> <span class="nx">miner</span><span class="p">.</span><span class="nx">Sectors</span>
+        <span class="nx">miner</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="p">=</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="o">+</span> <span class="nf">ProvingPeriodDuration</span><span class="p">(</span><span class="nx">miner</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">CollateralForPower</span><span class="p">(</span><span class="nx">power</span> <span class="nx">BytesAmount</span><span class="p">)</span> <span class="nx">TokenAmount</span> <span class="p">{</span>
+    <span class="nx">availableFil</span> <span class="p">=</span> <span class="nx">FakeGlobalMethods</span><span class="p">.</span><span class="nf">GetAvailableFil</span><span class="p">()</span>
+    <span class="nx">totalNetworkPower</span> <span class="p">=</span> <span class="nx">StorageMinerActor</span><span class="p">.</span><span class="nf">GetTotalStorage</span><span class="p">()</span>
+    <span class="nx">numMiners</span> <span class="p">=</span> <span class="nx">StorageMarket</span><span class="p">.</span><span class="nf">GetMinerCount</span><span class="p">()</span>
+    <span class="nx">powerCollateral</span> <span class="p">=</span> <span class="nx">availableFil</span> <span class="o">*</span> <span class="nx">NetworkConstants</span><span class="p">.</span><span class="nx">POWER_COLLATERAL_PROPORTION</span> <span class="o">*</span> <span class="nx">power</span> <span class="o">/</span> <span class="nx">totalNetworkPower</span>
+    <span class="nx">perCapitaCollateral</span> <span class="p">=</span> <span class="nx">availableFil</span> <span class="o">*</span> <span class="nx">NetworkConstants</span><span class="p">.</span><span class="nx">PER_CAPITA_COLLATERAL_PROPORTION</span> <span class="o">/</span> <span class="nx">numMiners</span>
+    <span class="nx">collateralRequired</span> <span class="p">=</span> <span class="nx">math</span><span class="p">.</span><span class="nf">Ceil</span><span class="p">(</span><span class="nx">minerPowerCollateral</span> <span class="o">+</span> <span class="nx">minerPerCapitaCollateral</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">collateralRequired</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="submitpost"><code>SubmitPoSt</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> SubmitPost struct <span class="o">{</span>
+    proofs PoStProof
+    doneSet Bitfield
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">SubmitPost</span><span class="p">(</span><span class="nx">proofs</span> <span class="nx">PoStProof</span><span class="p">,</span> <span class="nx">doneSet</span> <span class="nx">Bitfield</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Worker</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized to submit post for miner&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">feesRequired</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="nx">nextProvingPeriodEnd</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="o">+</span> <span class="nf">ProvingPeriodDuration</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">)</span>
+
+    <span class="c1">// TODO: rework fault handling, for now anything later than 2 proving periods is invalid
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">nextProvingPeriodEnd</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;PoSt submited too late&#34;</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="p">&gt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="p">{</span>
+        <span class="nx">feesRequired</span> <span class="o">+=</span> <span class="nf">ComputeLateFee</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">power</span><span class="p">,</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">provingPeriodEnd</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">feesRequired</span> <span class="o">+=</span> <span class="nf">ComputeTemporarySectorFailureFee</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">currentFaultSet</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span> <span class="p">&lt;</span> <span class="nx">feesRequired</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not enough funds to pay post submission fees&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// we want to ensure that the miner can submit more fees than required, just in case
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span> <span class="p">&gt;</span> <span class="nx">feesRequired</span> <span class="p">{</span>
+        <span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">,</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span><span class="o">-</span><span class="nx">feesRequired</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">seed</span>
+    <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="p">{</span>
+      <span class="c1">// good case, submitted in time
+</span><span class="c1"></span>      <span class="nx">seed</span> <span class="p">=</span> <span class="nf">GetRandFromBlock</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="o">-</span> <span class="nx">POST_CHALLENGE_TIME</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// bad case, submitted late, need to take new proving period end as reference
+</span><span class="c1"></span>      <span class="nx">seed</span> <span class="p">=</span> <span class="nf">GetRandFromBlock</span><span class="p">(</span><span class="nx">nextPovingPeriodEnd</span> <span class="o">-</span> <span class="nx">POST_CHALLENGE_TIME</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">faultSet</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">currentFaultSet</span>
+
+    <span class="k">if</span> <span class="p">!</span><span class="nf">VerifyPoSt</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">provingSet</span><span class="p">,</span> <span class="nx">seed</span><span class="p">,</span> <span class="nx">proof</span><span class="p">,</span> <span class="nx">faultSet</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;proof invalid&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The next fault set becomes the current one
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">currentFaultSet</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">nextFaultSet</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">nextFaultSet</span> <span class="p">=</span> <span class="nf">EmptySectorSet</span><span class="p">()</span>
+
+    <span class="c1">// TODO: penalize for faults
+</span><span class="c1"></span>
+    <span class="c1">// Remove doneSet from the current sectors
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">Sectors</span><span class="p">.</span><span class="nf">Subtract</span><span class="p">(</span><span class="nx">doneSet</span><span class="p">)</span>
+
+    <span class="c1">// Update miner power to the amount of data actually proved during the last proving period.
+</span><span class="c1"></span>    <span class="nx">oldPower</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Power</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Power</span> <span class="p">=</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">-</span> <span class="nx">faultSet</span><span class="p">.</span><span class="nf">Count</span><span class="p">())</span> <span class="o">*</span> <span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span>
+    <span class="nx">StorageMarket</span><span class="p">.</span><span class="nf">UpdateStorage</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">Power</span> <span class="o">-</span> <span class="nx">oldPower</span><span class="p">)</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Sectors</span>
+
+    <span class="c1">// Updating proving period given a fixed schedule, independent of late submissions.
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="p">=</span> <span class="nx">nextProvingPeriodEnd</span>
+
+    <span class="c1">// update next done set
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">NextDoneSet</span> <span class="p">=</span> <span class="nx">done</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">ArbitratedDeals</span><span class="p">.</span><span class="nf">Clear</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">ProvingPeriodDuration</span><span class="p">(</span><span class="nx">sectorSize</span> <span class="kt">uint64</span><span class="p">)</span> <span class="nx">Integer</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1">// number of blocks in one day
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">ComputeLateFee</span><span class="p">(</span><span class="nx">power</span> <span class="nx">Integer</span><span class="p">,</span> <span class="nx">blocksLate</span> <span class="nx">Integer</span><span class="p">)</span> <span class="nx">TokenAmount</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">4</span> <span class="c1">// TODO: real collateral calculation, obviously
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">ComputeTemporarySectorFailureFee</span><span class="p">(</span><span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">numSectors</span> <span class="nx">Integer</span><span class="p">)</span> <span class="nx">TokenAmount</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">4</span> <span class="c1">// TODO: something tells me that 4 might not work in all situations. probably should find a better way to compute this
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<h4 id="slashstoragefault"><code>SlashStorageFault</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> SlashStorageFault struct <span class="o">{</span>
+    miner Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">SlashStorageFault</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// You can only be slashed once for missing your PoSt.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">SlashedAt</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;miner already slashed&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Only if the miner is actually late, they can be slashed.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span><span class="o">+</span><span class="nf">GenerationAttackTime</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;miner is not yet tardy&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Only a miner who is expected to prove, can be slashed.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;miner is inactive&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Strip the miner of their power.
+</span><span class="c1"></span>    <span class="nx">StorageMarketActor</span><span class="p">.</span><span class="nf">UpdateStorage</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Power</span><span class="p">)</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Power</span> <span class="p">=</span> <span class="mi">0</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">slashedSet</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span>
+    <span class="c1">// remove proving set from our sectors
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">sectors</span><span class="p">.</span><span class="nf">Substract</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">slashedSet</span><span class="p">)</span>
+
+    <span class="c1">// clear proving set
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span> <span class="p">=</span> <span class="kc">nil</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">owedStorageCollateral</span> <span class="p">=</span> <span class="nx">StorageMarketActor</span><span class="p">.</span><span class="nf">StorageCollateralForSize</span><span class="p">(</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">slashedSet</span><span class="p">.</span><span class="nf">Size</span><span class="p">()</span> <span class="o">*</span> <span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">SlashedAt</span> <span class="p">=</span> <span class="nx">CurrentBlockHeight</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getcurrentprovingset"><code>GetCurrentProvingSet</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetCurrentProvingSet struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetCurrentProvingSet</span><span class="p">()</span> <span class="p">[][]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingSet</span>
+<span class="p">}</span></code></pre></div>
+<div class="notices note" ><strong>Note</strong>: this is unlikely to ever be called on-chain, and will be a very large amount of data. We should reconsider the need for a list of all sector commitments (maybe fixing with accumulators?)</div>
+
+<h4 id="arbitratedeal"><code>ArbitrateDeal</code></h4>
+
+<p>This may be called by anyone to penalize a miner for dropping the data of a deal they committed to before the deal expires. Note: in order to call this, the caller must have the signed deal between the client and the miner in question, this would require out of band communication of this information from the client to acquire.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> ArbitrateDeal struct <span class="o">{</span>
+    deal Deal
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">AbitrateDeal</span><span class="p">(</span><span class="nx">deal</span> <span class="nx">Deal</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">VM</span><span class="p">.</span><span class="nf">ValidateSignature</span><span class="p">(</span><span class="nx">deal</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Worker</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;invalid signature on deal&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">deal</span><span class="p">.</span><span class="nx">StartTime</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Deal not yet started&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">deal</span><span class="p">.</span><span class="nx">Expiry</span> <span class="p">&lt;</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Deal is expired&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">NextDoneSet</span><span class="p">.</span><span class="nf">Has</span><span class="p">(</span><span class="nx">deal</span><span class="p">.</span><span class="nx">pieceInclusionProof</span><span class="p">.</span><span class="nx">sectorID</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Deal agreement not broken, or arbitration too late&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ArbitratedDeals</span><span class="p">.</span><span class="nf">Has</span><span class="p">(</span><span class="nx">deal</span><span class="p">.</span><span class="nx">commP</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot slash miner twice for same deal&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">!</span><span class="nx">deal</span><span class="p">.</span><span class="nx">pieceInclusionProof</span><span class="p">.</span><span class="nf">Verify</span><span class="p">(</span><span class="nx">deal</span><span class="p">.</span><span class="nx">commP</span><span class="p">,</span> <span class="nx">deal</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;invalid piece inclusion proof or size&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">storageCollateral</span> <span class="o">:=</span> <span class="nx">StorageMarketActor</span><span class="p">.</span><span class="nf">StorageCollateralForSize</span><span class="p">(</span><span class="nx">deal</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">owedStorageCollateral</span> <span class="p">&lt;</span> <span class="nx">storageCollateral</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;math is hard, and we didnt do it right&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// pay the client the storage collateral
+</span><span class="c1"></span>    <span class="nx">VM</span><span class="p">.</span><span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">storageCollateral</span><span class="p">,</span> <span class="nx">deal</span><span class="p">.</span><span class="nx">client</span><span class="p">)</span>
+
+    <span class="c1">// keep track of how much we have payed out
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">owedStorageCollateral</span> <span class="o">-=</span> <span class="nx">storageCollateral</span>
+
+    <span class="c1">// make sure the miner can&#39;t be slashed twice for this deal
+</span><span class="c1"></span>    <span class="nx">self</span><span class="p">.</span><span class="nx">ArbitratedDeals</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">deal</span><span class="p">.</span><span class="nx">commP</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<div class="notices todo" ><strong>TODO(scaling)</strong>: This method, as currently designed, must be called once per sector. If a miner agrees to store 1TB (1000 sectors) for a particular client, and loses all that data, the client must then call this method 1000 times, which will be really expensive.</div>
+
+<h4 id="depledge"><code>DePledge</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> DePledge struct <span class="o">{</span>
+    amount TokenAmount
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">DePledge</span><span class="p">(</span><span class="nx">amt</span> <span class="nx">TokenAmount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">Worker</span> <span class="o">&amp;&amp;</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">owner</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Not authorized to call DePledge&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgeTime</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgeTime</span> <span class="p">&gt;</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;too early to withdraw collateral&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">owner</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgedCollateral</span><span class="p">)</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgeTime</span> <span class="p">=</span> <span class="mi">0</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgedCollateral</span> <span class="p">=</span> <span class="mi">0</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+
+    <span class="nx">collateralRequired</span> <span class="p">=</span> <span class="nf">CollateralForPower</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">power</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">amt</span><span class="o">+</span><span class="nx">collateralRequired</span> <span class="p">&gt;</span> <span class="nx">vm</span><span class="p">.</span><span class="nf">MyBalance</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Not enough free collateral to withdraw that much&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgedCollateral</span> <span class="p">=</span> <span class="nx">amt</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">DePledgeTime</span> <span class="p">=</span> <span class="nx">CurrentBlockHeight</span> <span class="o">+</span> <span class="nx">DePledgeCooldown</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getowner"><code>GetOwner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetOwner struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetOwner</span><span class="p">()</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">owner</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getworkeraddr"><code>GetWorkerAddr</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetWorkerAddr struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetWorkerAddr</span><span class="p">()</span> <span class="nx">Address</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">worker</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getpower"><code>GetPower</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetPower struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetPower</span><span class="p">()</span> <span class="nx">BytesAmount</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">power</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getpeerid"><code>GetPeerID</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetPeerID struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetPeerID</span><span class="p">()</span> <span class="nx">PeerID</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">peerID</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="getsectorsize"><code>GetSectorSize</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> GetSectorSize struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">GetSectorSize</span><span class="p">()</span> <span class="nx">BytesAmount</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">sectorSize</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="updatepeerid"><code>UpdatePeerID</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> UpdatePeerID struct <span class="o">{</span>
+    peerId PeerId
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">UpdatePeerID</span><span class="p">(</span><span class="nx">pid</span> <span class="nx">PeerID</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">worker</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;only the mine worker may update the peer ID&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">peerID</span> <span class="p">=</span> <span class="nx">pid</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="changeworker"><code>ChangeWorker</code></h4>
+
+<p>Changes the worker address. Note that since Sector Commitments take the miners worker key as an input, any sectors sealed with the old key but not yet submitted to the chain will be invalid. All future sectors must be sealed with the new worker key.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> ChangeWorker struct <span class="o">{</span>
+    addr Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ChangeWorker</span><span class="p">(</span><span class="nx">addr</span> <span class="nx">Address</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">owner</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;only the owner can change the worker address&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">info</span><span class="p">.</span><span class="nx">worker</span> <span class="p">=</span> <span class="nx">addr</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="islate"><code>IsLate</code></h4>
+
+<p>IsLate checks whether the miner has submitted their PoSt on time (i.e. not after ProvingPeriodEnd).</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> IsLate struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">IsLate</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">provingPeriodEnd</span> <span class="p">&lt;</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="isslashed"><code>IsSlashed</code></h4>
+
+<p>Checks whether the miner has been slashed and not recovered. Note that if the miner is slashed and recovers, this will return False: it checks current state rather than historical occurence.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> IsSlashed struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">IsSlashed</span><span class="p">()</span> <span class="p">(</span><span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="err">#</span> <span class="nx">SlashedAt</span> <span class="nx">is</span> <span class="nx">reset</span> <span class="nx">on</span> <span class="nx">recovery</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">SlashedAt</span> <span class="p">&gt;</span> <span class="mi">0</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="paymentverifyinclusion"><code>PaymentVerifyInclusion</code></h4>
+
+<p>Verifies a storage market payment channel voucher&rsquo;s &lsquo;Extra&rsquo; data by validating piece inclusion proof.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> PaymentVerify struct <span class="o">{</span>
+    Extra Bytes
+    Proof Bytes
+<span class="o">}</span> representation tuple
+
+<span class="nb">type</span> PieceInclusionVoucherData struct <span class="o">{</span>
+    CommP Bytes
+    PieceSize BigInt
+<span class="o">}</span> representation tuple
+
+<span class="nb">type</span> InclusionProof struct <span class="o">{</span>
+    Sector BigInt // <span class="k">for</span> CommD, also verifies the sector is in sector <span class="nb">set</span>
+    Proof  Bytes
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">PaymentVerifyInclusion</span><span class="p">(</span><span class="nx">extra</span> <span class="nx">PieceInclusionVoucherData</span><span class="p">,</span> <span class="nx">proof</span> <span class="nx">InclusionProof</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">has</span><span class="p">,</span> <span class="nx">commD</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nf">GetSector</span><span class="p">(</span><span class="nx">proof</span><span class="p">.</span><span class="nx">Sector</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">!</span><span class="nx">has</span> <span class="p">{</span>
+    <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;miner does not have required sector&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nf">ValidatePIP</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">SectorSize</span><span class="p">,</span> <span class="nx">extra</span><span class="p">.</span><span class="nx">PieceSize</span><span class="p">,</span> <span class="nx">extra</span><span class="p">.</span><span class="nx">CommP</span><span class="p">,</span> <span class="nx">commD</span><span class="p">,</span> <span class="nx">proof</span><span class="p">.</span><span class="nx">Proof</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="paymentverifysector"><code>PaymentVerifySector</code></h4>
+
+<p>Verifies a storage market payment channel voucher&rsquo;s &lsquo;Extra&rsquo; data by checking for presence of a specified sector in miner&rsquo;s sector set.</p>
+
+<p>Miners should prefer payment vouchers with this method used for validation over <code>PaymentVerifyInclusion</code>, because posting them to the chain will be much cheaper.</p>
+
+<p>Clients should only create such vouchers after verifying that miners have related sectors in their sector set, and after checking piece inclusion proof.</p>
+
+<p>Miners can incentivize clients to produce such vouchers by applying small &lsquo;discount&rsquo; to amount of token clients have to pay.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> PaymentVerify struct <span class="o">{</span>
+    Extra Bytes
+    Proof Bytes
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">PaymentVerifyInclusion</span><span class="p">(</span><span class="nx">extra</span> <span class="nx">BigInt</span><span class="p">,</span> <span class="nx">proof</span> <span class="nx">Bytes</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">proof</span><span class="p">)</span> <span class="p">&gt;</span> <span class="mi">0</span> <span class="p">{</span>
+    <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;unexpected proof bytes&#34;</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nf">HasSector</span><span class="p">(</span><span class="nx">extra</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="addfaults"><code>AddFaults</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> AddFaults struct <span class="o">{</span>
+    faults FaultSet
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">AddFaults</span><span class="p">(</span><span class="nx">faults</span> <span class="nx">FaultSet</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">challengeBlockHeight</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ProvingPeriodEnd</span> <span class="o">-</span> <span class="nx">POST_CHALLENGE_TIME</span>
+
+    <span class="k">if</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">challengeBlockHeight</span> <span class="p">{</span>
+        <span class="c1">// Up to the challenge time new faults can be added.
+</span><span class="c1"></span>        <span class="nx">self</span><span class="p">.</span><span class="nx">currentFaultSet</span> <span class="p">=</span> <span class="nf">Merge</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">currentFaultSet</span><span class="p">,</span> <span class="nx">faults</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// After that they are only accounted for in the next proving period
+</span><span class="c1"></span>        <span class="nx">self</span><span class="p">.</span><span class="nx">nextFaultSet</span> <span class="p">=</span> <span class="nf">Merge</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">nextFaultSet</span><span class="p">,</span> <span class="nx">faults</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="payment-channel-actor">Payment Channel Actor</h3>
+
+<ul>
+<li><strong>Code Cid:</strong> <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;paych&quot;&gt;</code></li>
+</ul>
+
+<p>The payment channel actor manages the on-chain state of a point to point payment channel.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> PaymentChannel struct <span class="o">{</span>
+    from Address
+    to   Address
+
+    toSend       TokenAmount
+
+    closingAt      UInt
+    minCloseHeight UInt
+
+    laneStates <span class="o">{</span>UInt:LaneState<span class="o">}</span>
+<span class="o">}</span> representation tuple
+
+<span class="nb">type</span> SignedVoucher struct <span class="o">{</span>
+  TimeLock BlockHeight
+  SecretPreimage Bytes
+  Extra ModVerifyParams
+  Lane Uint
+  Nonce Uint
+  Merges <span class="o">[]</span>Merge
+  Amount TokenAmount
+  MinCloseHeight Uint
+
+  Signature Signature
+<span class="o">}</span>
+
+<span class="nb">type</span> ModVerifyParams struct <span class="o">{</span>
+  Actor Address
+  Method Uint
+  Data Bytes
+<span class="o">}</span>
+
+<span class="nb">type</span> Merge struct <span class="o">{</span>
+  Lane Uint
+  Nonce Uint
+<span class="o">}</span>
+
+<span class="nb">type</span> LaneState struct <span class="o">{</span>
+  Closed bool
+  Redeemed TokenAmount
+  Nonce Uint
+<span class="o">}</span>
+
+<span class="nb">type</span> PaymentChannelMethod union <span class="o">{</span>
+  <span class="p">|</span> PaymentChannelConstructor <span class="m">0</span>
+  <span class="p">|</span> UpdateChannelState <span class="m">1</span>
+  <span class="p">|</span> Close <span class="m">2</span>
+  <span class="p">|</span> Collect <span class="m">3</span>
+<span class="o">}</span> representation keyed</code></pre></div>
+<h4 id="methods-4">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>Constructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>UpdateChannelState</code></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td><code>Close</code></td>
+<td>3</td>
+</tr>
+
+<tr>
+<td><code>Collect</code></td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="constructor-3"><code>Constructor</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> PaymentChannelConstructor struct <span class="o">{</span>
+  to Address
+<span class="o">}</span></code></pre></div>
+<p><strong>Algorithm</strong></p>
+
+<div class="notices todo" >TODO: Define me</div>
+
+<h4 id="updatechannelstate"><code>UpdateChannelState</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> UpdateChannelState struct <span class="o">{</span>
+  sv SignedVoucher
+  secret Bytes
+  proof Bytes
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">UpdateChannelState</span><span class="p">(</span><span class="nx">sv</span> <span class="nx">SignedVoucher</span><span class="p">,</span> <span class="nx">secret</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">proof</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">validateSignature</span><span class="p">(</span><span class="nx">sv</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Signature Invalid&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">TimeLock</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot use this voucher yet!&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">SecretPreimage</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nf">Hash</span><span class="p">(</span><span class="nx">secret</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">SecretPreimage</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Incorrect secret!&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Extra</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="nx">ret</span> <span class="o">:=</span> <span class="nx">vmctx</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="nx">sv</span><span class="p">.</span><span class="nx">Extra</span><span class="p">.</span><span class="nx">Actor</span><span class="p">,</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Extra</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Extra</span><span class="p">.</span><span class="nx">Data</span><span class="p">,</span> <span class="nx">proof</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">ret</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;spend voucher verification failed&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">ls</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">LaneStates</span><span class="p">[</span><span class="nx">sv</span><span class="p">.</span><span class="nx">Lane</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nx">ls</span><span class="p">.</span><span class="nx">Closed</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot redeem a voucher on a closed lane&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">ls</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">&gt;</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;voucher has an outdated nonce, cannot redeem&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">mergeValue</span> <span class="nx">TokenAmount</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">merge</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Merges</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">Lane</span> <span class="o">==</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Lane</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;voucher cannot merge its own lane&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nx">ols</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">LaneStates</span><span class="p">[</span><span class="nx">merge</span><span class="p">.</span><span class="nx">Lane</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">ols</span><span class="p">.</span><span class="nx">Nonce</span> <span class="o">&gt;=</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;merge in voucher has outdated nonce, cannot redeem&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nx">mergeValue</span> <span class="o">+=</span> <span class="nx">ols</span><span class="p">.</span><span class="nx">Redeemed</span>
+        <span class="nx">ols</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">=</span> <span class="nx">merge</span><span class="p">.</span><span class="nx">Nonce</span>
+    <span class="p">}</span>
+
+    <span class="nx">ls</span><span class="p">.</span><span class="nx">Nonce</span> <span class="p">=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Nonce</span>
+    <span class="nx">balanceDelta</span> <span class="p">=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Amount</span> <span class="o">-</span> <span class="p">(</span><span class="nx">mergeValue</span> <span class="o">+</span> <span class="nx">ls</span><span class="p">.</span><span class="nx">Redeemed</span><span class="p">)</span>
+    <span class="nx">ls</span><span class="p">.</span><span class="nx">Redeemed</span> <span class="p">=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">Amount</span>
+
+    <span class="nx">newSendBalance</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ToSend</span> <span class="o">+</span> <span class="nx">balanceDelta</span>
+    <span class="k">if</span> <span class="nx">newSendBalance</span> <span class="p">&lt;</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="c1">// TODO: is this impossible?
+</span><span class="c1"></span>        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;voucher would leave channel balance negative&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">newSendBalance</span> <span class="p">&gt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Balance</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not enough funds in channel to cover voucher&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">ToSend</span> <span class="p">=</span> <span class="nx">newSendBalance</span>
+
+    <span class="k">if</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">&lt;</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="p">{</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">MinCloseHeight</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="p">&lt;</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="p">{</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="p">=</span> <span class="nx">sv</span><span class="p">.</span><span class="nx">MinCloseHeight</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">Hash</span><span class="p">(</span><span class="nx">b</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">blake2b</span><span class="p">.</span><span class="nf">Sum</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="close"><code>Close</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Close struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="nx">ChannelClosingDelay</span> <span class="p">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1">// six hours
+</span><span class="c1"></span>
+<span class="kd">func</span> <span class="nf">Close</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">From</span> <span class="o">&amp;&amp;</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">To</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized to close channel&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Channel already closing&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">=</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="o">+</span> <span class="nx">ChannelClosingDelay</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">MinCloseHeight</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">MinCloseHeight</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="collect"><code>Collect</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Collect struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Collect</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;payment channel not closing or closed&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="nx">chain</span><span class="p">.</span><span class="nf">Now</span><span class="p">()</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ClosingAt</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Payment channel not yet closed&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">From</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Balance</span><span class="o">-</span><span class="nx">self</span><span class="p">.</span><span class="nx">ToSend</span><span class="p">)</span>
+    <span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">To</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">ToSend</span><span class="p">)</span>
+  <span class="nx">self</span><span class="p">.</span><span class="nx">ToSend</span> <span class="p">=</span> <span class="mi">0</span>
+<span class="p">}</span></code></pre></div>
+<h3 id="multisig-account-actor">Multisig Account Actor</h3>
+
+<ul>
+<li><strong>Code Cid</strong>: <code>&lt;codec:raw&gt;&lt;mhType:identity&gt;&lt;&quot;multisig&quot;&gt;</code></li>
+</ul>
+
+<p>A basic multisig account actor. Allows sending of messages like a normal account actor, but with the requirement of M of N parties agreeing to the operation. Completed and/or cancelled operations stick around in the actors state until explicitly cleared out. Proposers may cancel transactions they propose, or transactions by proposers who are no longer approved signers.</p>
+
+<p>Self modification methods (add/remove signer, change requirement) are called by
+doing a multisig transaction invoking the desired method on the contract itself. This means the &lsquo;signature
+threshold&rsquo; logic only needs to be implemented once, in one place.</p>
+
+<p>The <a href="#init-actor">init actor</a> is used to create new instances of the multisig.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> MultisigActorState struct <span class="o">{</span>
+    signers <span class="o">[</span>Address<span class="o">]</span>
+    required UInt
+    nextTxId UInt
+    initialBalance UInt
+    startingBlock UInt
+    unlockDuration UInt
+    transactions <span class="o">{</span>UInt:Transaction<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="nb">type</span> Transaction struct <span class="o">{</span>
+    txID UInt
+    to Address
+    value TokenAmount
+    method <span class="p">&amp;</span>ActorMethod
+    approved <span class="o">[</span>Address<span class="o">]</span>
+    completed Bool
+    canceled Bool
+    retcode UInt
+<span class="o">}</span></code></pre></div>
+<h4 id="methods-5">Methods</h4>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Method ID</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>MultisigConstructor</code></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td><code>Propose</code></td>
+<td>2</td>
+</tr>
+
+<tr>
+<td><code>Approve</code></td>
+<td>3</td>
+</tr>
+
+<tr>
+<td><code>Cancel</code></td>
+<td>4</td>
+</tr>
+
+<tr>
+<td><code>ClearCompleted</code></td>
+<td>5</td>
+</tr>
+
+<tr>
+<td><code>AddSigner</code></td>
+<td>6</td>
+</tr>
+
+<tr>
+<td><code>RemoveSigner</code></td>
+<td>7</td>
+</tr>
+
+<tr>
+<td><code>SwapSigner</code></td>
+<td>8</td>
+</tr>
+
+<tr>
+<td><code>ChangeRequirement</code></td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="constructor-4"><code>Constructor</code></h4>
+
+<p>This method sets up the initial state for the multisig account</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> MultisigConstructor struct <span class="o">{</span>
+    <span class="c1">## The addresses that will be the signatories of this wallet.</span>
+    signers <span class="o">[</span>Address<span class="o">]</span>
+    <span class="c1">## The number of signatories required to perform a transaction.</span>
+    required UInt
+    <span class="c1">## Unlock time (in blocks) of initial filecoin balance of this wallet. Unlocking is linear.</span>
+    unlockDuration UInt
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Multisig</span><span class="p">(</span><span class="nx">signers</span> <span class="p">[]</span><span class="nx">Address</span><span class="p">,</span> <span class="nx">required</span> <span class="nx">UInt</span><span class="p">,</span> <span class="nx">unlockDuration</span> <span class="nx">UInt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span> <span class="p">=</span> <span class="nx">signers</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">=</span> <span class="nx">required</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">initialBalance</span> <span class="p">=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Value</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">unlockDuration</span> <span class="p">=</span> <span class="nx">unlockDuration</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">startingBlock</span> <span class="p">=</span> <span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="propose"><code>Propose</code></h4>
+
+<p>Propose is used to propose a new transaction to be sent by this multisig. The proposer must be a signer, and the proposal also serves as implicit approval from the proposer. If only a single signature is required, then the transaction is executed immediately.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Propose struct <span class="o">{</span>
+    <span class="c1">## The address of the target of the proposed transaction.</span>
+    to Address
+    <span class="c1">## The amount of funds to send with the proposed transaction.</span>
+    value TokenAmount
+    <span class="c1">## The method and parameters that will be invoked on the proposed transactions target.</span>
+    method <span class="p">&amp;</span>ActorMethod
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Propose</span><span class="p">(</span><span class="nx">to</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">value</span> <span class="nx">TokenAmount</span><span class="p">,</span> <span class="nx">method</span> <span class="nx">String</span><span class="p">,</span> <span class="nx">params</span> <span class="nx">Bytes</span><span class="p">)</span> <span class="nx">UInt</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">txid</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">NextTxID</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">NextTxID</span><span class="o">++</span>
+
+    <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">Transaction</span><span class="p">{</span>
+        <span class="nx">TxID</span><span class="p">:</span>     <span class="nx">txid</span><span class="p">,</span>
+        <span class="nx">To</span><span class="p">:</span>       <span class="nx">to</span><span class="p">,</span>
+        <span class="nx">Value</span><span class="p">:</span>    <span class="nx">value</span><span class="p">,</span>
+        <span class="nx">Method</span><span class="p">:</span>   <span class="nx">method</span><span class="p">,</span>
+        <span class="nx">Params</span><span class="p">:</span>   <span class="nx">params</span><span class="p">,</span>
+        <span class="nx">Approved</span><span class="p">:</span> <span class="p">[]</span><span class="nx">Address</span><span class="p">{</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">},</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Transactions</span><span class="p">.</span><span class="nf">Append</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">canSpend</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;transaction amount exceeds available&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">RetCode</span> <span class="p">=</span> <span class="nx">vm</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">To</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Params</span><span class="p">)</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">Complete</span> <span class="p">=</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">txid</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="approve"><code>Approve</code></h4>
+
+<p>Approve is called by a signer to approve a given transaction. If their approval pushes the approvals for this transaction over the threshold, the transaction is executed.</p>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Approve struct <span class="o">{</span>
+    <span class="c1">## The ID of the transaction to approve.</span>
+    txid UInt
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Approve</span><span class="p">(</span><span class="nx">txid</span> <span class="nx">UInt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nf">getTransaction</span><span class="p">(</span><span class="nx">txid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Complete</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;transaction already completed&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Canceled</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;transaction canceled&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">signer</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Approved</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">signer</span> <span class="o">==</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;already signed this message&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">tx</span><span class="p">.</span><span class="nx">Approved</span><span class="p">.</span><span class="nf">Append</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">Approved</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">canSpend</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">Value</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;transaction amount exceeds available&#34;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">RetCode</span> <span class="p">=</span> <span class="nx">vm</span><span class="p">.</span><span class="nf">Send</span><span class="p">(</span><span class="nx">tx</span><span class="p">.</span><span class="nx">To</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Value</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Method</span><span class="p">,</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Params</span><span class="p">)</span>
+        <span class="nx">tx</span><span class="p">.</span><span class="nx">Complete</span> <span class="p">=</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="cancel"><code>Cancel</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> Cancel struct <span class="o">{</span>
+    txid UInt
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Cancel</span><span class="p">(</span><span class="nx">txid</span> <span class="nx">UInt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">tx</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nf">getTransaction</span><span class="p">(</span><span class="nx">txid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Complete</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot cancel completed transaction&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Canceled</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;transaction already canceled&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">proposer</span> <span class="o">:=</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Approved</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nx">proposer</span> <span class="o">!=</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">&amp;&amp;</span> <span class="nf">isSigner</span><span class="p">(</span><span class="nx">proposer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;cannot cancel another signers transaction&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">tx</span><span class="p">.</span><span class="nx">Canceled</span> <span class="p">=</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="clearcompleted"><code>ClearCompleted</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> ClearCompleted struct <span class="o">{</span>
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ClearCompleted</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">From</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;not authorized&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">tx</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Transactions</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Completed</span> <span class="o">||</span> <span class="nx">tx</span><span class="p">.</span><span class="nx">Canceled</span> <span class="p">{</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">Transactions</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">tx</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="addsigner"><code>AddSigner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> AddSigner struct <span class="o">{</span>
+    signer Address
+    increaseReq bool
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">AddSigner</span><span class="p">(</span><span class="nx">signer</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">increaseReq</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Address</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;add signer must be called by wallet itself&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">signer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;new address is already a signer&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">increaseReq</span> <span class="p">{</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">.</span><span class="nf">Append</span><span class="p">(</span><span class="nx">signer</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="removesigner"><code>RemoveSigner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> RemoveSigner struct <span class="o">{</span>
+    signer Address
+    decreaseReq bool
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">RemoveSigner</span><span class="p">(</span><span class="nx">signer</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">decreaseReq</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Address</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;remove signer must be called by wallet itself&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">signer</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;given address was not a signer&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">decreaseReq</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="p">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">{</span>
+        <span class="c1">// Reduce Required outherwise the wallet is locked out
+</span><span class="c1"></span>        <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">signer</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="swapsigner"><code>SwapSigner</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> SwapSigner struct <span class="o">{</span>
+    old Address
+    new Address
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">SwapSigner</span><span class="p">(</span><span class="nx">old</span> <span class="nx">Address</span><span class="p">,</span> <span class="nx">new</span> <span class="nx">Address</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Address</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;swap signer must be called by wallet itself&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">old</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;given old address was not a signer&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nf">isSigner</span><span class="p">(</span><span class="nx">new</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;given new address was already a signer&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">old</span><span class="p">)</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">.</span><span class="nf">Append</span><span class="p">(</span><span class="nx">new</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h4 id="changerequirement"><code>ChangeRequirement</code></h4>
+
+<p><strong>Parameters</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="nb">type</span> ChangeRequirement struct <span class="o">{</span>
+    requirement UInt
+<span class="o">}</span> representation tuple</code></pre></div>
+<p><strong>Algorithm</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">ChangeRequirement</span><span class="p">(</span><span class="nx">req</span> <span class="nx">UInt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">From</span> <span class="o">!=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Address</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;change requirement must be called by wallet itself&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">req</span> <span class="p">&lt;</span> <span class="mi">1</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;requirement must be at least 1&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="nx">req</span> <span class="p">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;requirement must be less than number of signers&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">Required</span> <span class="p">=</span> <span class="nx">req</span>
+<span class="p">}</span></code></pre></div>
+<h2 id="helper-methods">Helper Methods</h2>
+
+<p>The various helper methods called above are defined here.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">isSigner</span><span class="p">(</span><span class="nx">a</span> <span class="nx">Address</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="nx">signer</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Signers</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="nx">a</span> <span class="o">==</span> <span class="nx">signer</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">getTransaction</span><span class="p">(</span><span class="nx">txid</span> <span class="nx">UInt</span><span class="p">)</span> <span class="nx">Transaction</span> <span class="p">{</span>
+    <span class="nx">tx</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">Transactions</span><span class="p">[</span><span class="nx">txid</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
+        <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;no such transaction&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">tx</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">AggregateBitfields</span><span class="p">(</span><span class="nx">faults</span> <span class="p">[]</span><span class="nx">FaultSet</span><span class="p">)</span> <span class="nx">Bitfield</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">out</span> <span class="nx">Bitfield</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">f</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">faults</span> <span class="p">{</span>
+        <span class="nx">out</span> <span class="p">=</span> <span class="nx">out</span><span class="p">.</span><span class="nf">Union</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">bitField</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">out</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">BurnFunds</span><span class="p">(</span><span class="nx">amt</span> <span class="nx">TokenAmount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">TransferFunds</span><span class="p">(</span><span class="nx">BurntFundsAddress</span><span class="p">,</span> <span class="nx">amt</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">canSpend</span><span class="p">(</span><span class="nx">amt</span> <span class="nx">TokenAmount</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">unlockDuration</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">MinAllowableBalance</span> <span class="p">=</span> <span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">initialBalance</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">unlockDuration</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nx">VM</span><span class="p">.</span><span class="nf">CurrentBlockHeight</span><span class="p">()</span> <span class="o">-</span> <span class="nx">self</span><span class="p">.</span><span class="nx">startingBlock</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">MinAllowableBalance</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="nx">vm</span><span class="p">.</span><span class="nf">MyBalance</span><span class="p">()</span> <span class="o">-</span> <span class="nx">amt</span><span class="p">)</span>
+<span class="p">}</span></code></pre></div>
+<h1 id="faults">Faults</h1>
+
+<p>A fault is what happens when partcipants in the protocol are behaving incorrectly and that behavior needs to be punished. There are a number of possible faults in the Filecoin protocol, their details are all recorded below.</p>
+
+<h2 id="fault-list">Fault List</h2>
+
+<h3 id="consensus-faults">Consensus Faults</h3>
+
+<ul>
+<li><strong>Duplicate Block Submission Slashing:</strong>
+
+<ul>
+<li><strong>Condition:</strong> If any miner posts two blocks satisfying the slashing conditions defined in <a href="../expected-consensus">Expected Consensus</a>.</li>
+<li><strong>Reporting:</strong> Anyone may call <code>SlashConsensusFault</code> and pass in the two offending block headers.</li>
+<li><strong>Check:</strong> The chain checks that both blocks are valid, correctly signed by the same miner, and satisfy the consensus slashing conditions.</li>
+<li><strong>Penalization:</strong> All of the miner&rsquo;s pledge collateral and all of their power is irrevocably slashed. This miner can never again produce blocks, even if they attempt to repost their collateral.</li>
+</ul></li>
+</ul>
+
+<h3 id="market-faults">Market Faults</h3>
+
+<ul>
+<li><strong>Late submission penalty:</strong>
+
+<ul>
+<li><strong>Condition</strong>: If the miner posts their PoSt after the proving period ends, but before the generation attack threshold.</li>
+<li><strong>Reporting:</strong> The miner submits their PoSt as usual, but includes the late submission fee.</li>
+<li><strong>Check:</strong> The chain checks first that the submission is within the <code>generation attack threshold</code>, and then checks that the fee provided matches the required fee for how many blocks late the submission is.</li>
+<li><strong>Penalization:</strong> The miner is penalized proportionally to the delay. Penalizations are enforced by a standard PoSt submission.</li>
+<li><em>Economic penalization</em>: To determine the penalty amount, <code>ComputeLateFee(minerPower, numLate)</code> is called.</li>
+<li><em>Power penalization</em>: The miners&rsquo; power is not reduced. Note that the current view of the power table is computed with the lookback parameter.
+
+<ul>
+<li><em>Why are we accounting the power table with a lookback parameter ?</em> If we do not use the lookback parameter then, we need to penalize late miners for the duration that they are late. This is tricky to do efficiently. For xample, if miners A, B and C each have <sup>1</sup>&frasl;<sub>3</sub> of the networks power, and C is late in submitting their proofs, then for that duration, A and B should each have effectively half of the networks power (and a 50% chance each of winning the block).</li>
+</ul></li>
+<li>TODO: write on the spec exact parameters for PoSt Deadline and Gen Attack threshold</li>
+</ul></li>
+<li><strong>Unreported storage fault slashing:</strong>
+
+<ul>
+<li><strong>Condition:</strong> If the miner does not submit their PoSt by the <code>generation attack threshold</code>.</li>
+<li><strong>Reporting:</strong> The miner can be slashed by anyone else in the network who calls <code>SlashStorageFaults</code>. We expect miners to report these faults.</li>
+<li>Future design note: moving forward, we should either compensate the caller, or require this</li>
+<li>Note: we could <em>require</em> the method be called, as part of the consensus rules (this gets complicated though). In this case, there is a DoS attack where if I make a large number of miners each with a single sector, and fail them all at the same time, the next block miner will be forced to do a very large amount of work. This would either need an extended &lsquo;gas limit&rsquo;, or some other method to avoid too long validation times.</li>
+<li><strong>Check:</strong> The chain checks that the miners last PoSt submission was before the start of their current proving period, and that the current block is after the generation attack threshold for their current proving period.</li>
+<li><strong>Penalization:</strong> Penalizations are enforced by <code>SlashStorageFault</code> on the <code>storage market</code> actor.</li>
+<li><em>Economic Penalization</em>: Miner loses all collateral.</li>
+<li><em>Power Penalization</em>: Miner loses all power.</li>
+<li>Note: If a miner is in this state, where they have failed to submit a PoST, any block they attempt to mine will be invalid, even if the election function selects them. (the election function should probably be made to never select them)</li>
+<li>Future design note: There is a way to tolerate Internet connection faults. A miner runs an Emergency PoSt which does not take challenges from the chain, if the miner gets reconnected before the VDF attack time (based on Amax), then, they can submit the Emergency PoSt and get pay a late penalization fee.</li>
+</ul></li>
+<li><strong>Reported storage fault penalty:</strong>
+
+<ul>
+<li><strong>Condition:</strong> The miner submits their PoSt with a non-empty set of &lsquo;missing sectors&rsquo;.</li>
+<li><strong>Reporting:</strong> The miner can specify some sectors that they failed to prove during the proving period.</li>
+<li>Note: These faults are output by the <code>ProveStorage</code> routine, and are posted on-chain when posting the proof. This occurs when the miner (for example) has a disk failure, or other local data corruption.</li>
+<li><strong>Check:</strong> The chain checks that the proof verifies with the missing sectors.</li>
+<li><strong>Penalization:</strong> The miner is penalized for collateral and power proportional to the number of missing sectors. The sectors are also removed from the miners proving set.</li>
+<li>TODO: should the collateral lost here be proportional to the remaining time?</li>
+<li>TODO(nicola): check if the time between posting two proofs allows for a generation attack if it does not then we might reconsider the sector not being lost</li>
+<li>Note: if a sector is missed here, and they are recovered after the fact, the miner could simple &rsquo;re-commit&rsquo; the sector. They still have to pay the collateral, but the data can be quickly re-introduced into the system to avoid clients calling them out for breach of contract (this would only work because the sector commD/commR is the same)</li>
+<li>Note: In the case where a miner is temporarily unable to prove some of their data, they can simply wait for the temporary unavailability to recover, and then continue proving, submitting the proofs a bit late if necessary (paying appropriate fees, as described above).</li>
+</ul></li>
+<li><strong>Breach of contract dispute:</strong>
+
+<ul>
+<li><strong>Condition:</strong> A client who has stored data with a miner, and the miner removes the sector containing that data before the end of the agreed upon time period.</li>
+<li><strong>Reporting:</strong> The client invokes <code>ArbitrateDeal</code> on the offending miner actor with a signed deal from that miner for the storage in question. Note: the reporting must happen within one proving period of the miner removing the storage erroneously.</li>
+<li><strong>Check:</strong> The chain checks that the deal was correctly signed by the miner in question, that the deal has not yet expired, and that the sector referenced by the deal is no longer in the miners proving set.</li>
+<li><strong>Penalization:</strong> The miner is penalized an amount proportional to the incorrectly removed sector. This penalty is taken from their pledged collateral .</li>
+<li>Note: This implies that miners cannot re-seal data into different sectors. We could come up with a protocol where the client gives the miner explicit consent to re-seal, but that is more complicated and can be done later.</li>
+</ul></li>
+</ul>
+
+<h1 id="pledge-collateral">Pledge Collateral</h1>
+
+<p>Filecoin includes a concept of &ldquo;Pledge Collateral&rdquo;, which is FIL collateral that storage miners must lock up when participating as miners.</p>
+
+<p>Pledge collateral serves several functions in Filecoin. It:
+- makes it possible to slash misbehaving or slow miners
+- ensures that miners have skin in the game (for the Filecoin network as a whole)
+- increases the cost of launching a 51% attack</p>
+
+<h2 id="computing-pledge-collateral">Computing Pledge Collateral</h2>
+
+<p>The total pledge collateral across all miners is a fixed proportion of available FIL.
+Available FIL is computed as the total amount of FIL that has been mined, plus the total amount of FIL that&rsquo;s been vested, minued the amount of FIL which has been burned.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">availableFil</span> <span class="o">:=</span> <span class="nx">minedFil</span> <span class="o">+</span> <span class="nx">vestedFil</span> <span class="o">-</span> <span class="nx">burnedFil</span></code></pre></div>
+<p>Pledge collateral is subdivided into two kinds: power collateral and per-capita collateral.
+Power collateral is split across miners according to their share of the total network power, and per-capita collateral is split across miners evenly.
+Two parameters, <code>POWER_COLLATERAL_PROPORTION</code> and <code>PER_CAPITA_COLLATERAL_PROPORTION</code>, relate the total amount of collateral to the <code>availableFil</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">totalPowerCollateral</span> <span class="o">:=</span> <span class="nx">availableFil</span> <span class="o">*</span> <span class="nx">POWER_COLLATERAL_PROPORTION</span>
+<span class="nx">totalPerCapitaCollateral</span> <span class="o">:=</span> <span class="nx">availableFil</span> <span class="o">*</span> <span class="nx">PER_CAPITA_COLLATERAL_PROPORTION</span>
+<span class="nx">totalPledgeCollateral</span> <span class="o">:=</span> <span class="nx">totalPowerCollateral</span> <span class="o">+</span> <span class="nx">totalPerCapitaCollateral</span></code></pre></div>
+<p>Power-based collateral ensures that miners&rsquo; collateral is proportional to their economic size and to their expected rewards.
+The presence of per-capital collateral acts as a deterrent against Sibyl attacks.
+We intend for the <code>POWER_COLLATERAL_PROPORTION</code> to be several times larger than the <code>PER_CAPITA_COLLATERAL_PROPORTION</code>.</p>
+
+<p>To calculate any particular miner&rsquo;s collateral requirements, we need to know the miner&rsquo;s power, the total network power, and the total number of miners in the network.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">minerPowerCollateral</span> <span class="o">:=</span> <span class="nx">totalPowerCollateral</span> <span class="o">*</span> <span class="nx">minerPower</span> <span class="o">/</span> <span class="nx">totalNetworkPower</span>
+<span class="nx">minerPerCapitaCollateral</span> <span class="o">:=</span> <span class="nx">totalPerCapitaCollateral</span> <span class="o">/</span> <span class="nx">numMiners</span></code></pre></div>
+<p>Putting all these variables together, we have each miner&rsquo;s individual collateral requirement:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">minerPlegeCollateral</span> <span class="o">:=</span> <span class="nx">availableFil</span> <span class="o">*</span> <span class="p">(</span> <span class="nx">POWER_COLLATERAL_PROPORTION</span> <span class="o">*</span> <span class="nx">minerPower</span> <span class="o">/</span> <span class="nx">totalNetworkPower</span> <span class="nx">PER_CAPITA_COLLATERAL_PROPORTION</span> <span class="o">/</span> <span class="nx">numMiners</span><span class="p">)</span></code></pre></div>
+<h2 id="dealing-with-undercollateralization">Dealing with Undercollateralization</h2>
+
+<p>In the course of normal events, miners may become undercollateralized.</p>
+
+<p>They cannot directly undercollateralized themselves by adding more power, as commitSector will fail if they do not have sufficient collateral to cover their power requirements.
+However, their collateral requirement could increase due to growth in availableFil, a reduction in the total network power, or a reduction in the total number of miners.
+In such cases, the miner may continue to submit PoSts and mine blocks. When they win blocks, their block rewards will be garnished while they remain undercollateralized.</p>
+
+<h2 id="parameter-choices">Parameter Choices</h2>
+
+<p>We provisionally propose the following two parameters choices:</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">POWER_COLLATERAL_PROPORTION</span> <span class="o">:=</span> <span class="mf">0.2</span>
+<span class="nx">PER_CAPITA_COLLATERAL_PROPORTION</span> <span class="o">:=</span> <span class="mf">0.05</span></code></pre></div>
+<p>These are subject to change before launch.</p>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+  <aside class="book-toc fixed">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#sending-funds">Sending Funds</a></li>
+<li><a href="#state-representation">State Representation</a></li>
+<li><a href="#actor-creation">Actor Creation</a></li>
+<li><a href="#execution-calling-a-method-on-an-actor">Execution (Calling a method on an Actor)</a>
+<ul>
+<li><a href="#receipts">Receipts</a></li>
+<li><a href="#storage">Storage</a></li>
+</ul></li>
+<li><a href="#burning-funds">Burning Funds</a></li>
+</ul></li>
+<li><a href="#filecoin-state-machine-actors">Filecoin State Machine Actors</a></li>
+<li><a href="#actor-state">Actor State</a></li>
+<li><a href="#system-actors">System Actors</a></li>
+<li><a href="#built-in-actors">Built In Actors</a>
+<ul>
+<li><a href="#init-actor">Init Actor</a>
+<ul>
+<li><a href="#methods">Methods</a></li>
+<li><a href="#constructor"><code>Constructor</code></a></li>
+<li><a href="#exec"><code>Exec</code></a></li>
+<li><a href="#getidforaddress"><code>GetIdForAddress</code></a></li>
+</ul></li>
+<li><a href="#account-actor">Account Actor</a>
+<ul>
+<li><a href="#methods-1">Methods</a></li>
+<li><a href="#getaddress"><code>GetAddress</code></a></li>
+</ul></li>
+<li><a href="#storage-market-actor">Storage Market Actor</a>
+<ul>
+<li><a href="#methods-2">Methods</a></li>
+<li><a href="#constructor-1"><code>Constructor</code></a></li>
+<li><a href="#createstorageminer"><code>CreateStorageMiner</code></a></li>
+<li><a href="#slashconsensusfault"><code>SlashConsensusFault</code></a></li>
+<li><a href="#updatestorage"><code>UpdateStorage</code></a></li>
+<li><a href="#gettotalstorage"><code>GetTotalStorage</code></a></li>
+<li><a href="#powerlookup"><code>PowerLookup</code></a></li>
+<li><a href="#isminer"><code>IsMiner</code></a></li>
+<li><a href="#storagecollateralforsize"><code>StorageCollateralForSize</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#storage-miner-actor">Storage Miner Actor</a>
+<ul>
+<li>
+<ul>
+<li><a href="#methods-3">Methods</a></li>
+<li><a href="#constructor-2"><code>Constructor</code></a></li>
+<li><a href="#commitsector"><code>CommitSector</code></a></li>
+<li><a href="#submitpost"><code>SubmitPoSt</code></a></li>
+<li><a href="#slashstoragefault"><code>SlashStorageFault</code></a></li>
+<li><a href="#getcurrentprovingset"><code>GetCurrentProvingSet</code></a></li>
+<li><a href="#arbitratedeal"><code>ArbitrateDeal</code></a></li>
+<li><a href="#depledge"><code>DePledge</code></a></li>
+<li><a href="#getowner"><code>GetOwner</code></a></li>
+<li><a href="#getworkeraddr"><code>GetWorkerAddr</code></a></li>
+<li><a href="#getpower"><code>GetPower</code></a></li>
+<li><a href="#getpeerid"><code>GetPeerID</code></a></li>
+<li><a href="#getsectorsize"><code>GetSectorSize</code></a></li>
+<li><a href="#updatepeerid"><code>UpdatePeerID</code></a></li>
+<li><a href="#changeworker"><code>ChangeWorker</code></a></li>
+<li><a href="#islate"><code>IsLate</code></a></li>
+<li><a href="#isslashed"><code>IsSlashed</code></a></li>
+<li><a href="#paymentverifyinclusion"><code>PaymentVerifyInclusion</code></a></li>
+<li><a href="#paymentverifysector"><code>PaymentVerifySector</code></a></li>
+<li><a href="#addfaults"><code>AddFaults</code></a></li>
+</ul></li>
+<li><a href="#payment-channel-actor">Payment Channel Actor</a>
+<ul>
+<li><a href="#methods-4">Methods</a></li>
+<li><a href="#constructor-3"><code>Constructor</code></a></li>
+<li><a href="#updatechannelstate"><code>UpdateChannelState</code></a></li>
+<li><a href="#close"><code>Close</code></a></li>
+<li><a href="#collect"><code>Collect</code></a></li>
+</ul></li>
+<li><a href="#multisig-account-actor">Multisig Account Actor</a>
+<ul>
+<li><a href="#methods-5">Methods</a></li>
+<li><a href="#constructor-4"><code>Constructor</code></a></li>
+<li><a href="#propose"><code>Propose</code></a></li>
+<li><a href="#approve"><code>Approve</code></a></li>
+<li><a href="#cancel"><code>Cancel</code></a></li>
+<li><a href="#clearcompleted"><code>ClearCompleted</code></a></li>
+<li><a href="#addsigner"><code>AddSigner</code></a></li>
+<li><a href="#removesigner"><code>RemoveSigner</code></a></li>
+<li><a href="#swapsigner"><code>SwapSigner</code></a></li>
+<li><a href="#changerequirement"><code>ChangeRequirement</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#helper-methods">Helper Methods</a></li>
+</ul></li>
+<li><a href="#faults">Faults</a>
+<ul>
+<li><a href="#fault-list">Fault List</a>
+<ul>
+<li><a href="#consensus-faults">Consensus Faults</a></li>
+<li><a href="#market-faults">Market Faults</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#pledge-collateral">Pledge Collateral</a>
+<ul>
+<li><a href="#computing-pledge-collateral">Computing Pledge Collateral</a></li>
+<li><a href="#dealing-with-undercollateralization">Dealing with Undercollateralization</a></li>
+<li><a href="#parameter-choices">Parameter Choices</a></li>
+</ul></li>
+</ul>
+</nav>
+  </aside>
+
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

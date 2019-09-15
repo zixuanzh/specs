@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  
+    
+    Expected Consensus
+  
+ | Filecoin Spec</title>
+
+
+
+<link rel="stylesheet" href="../../../book.min.dd7edd971a70e42d8b77dee6408ce13a65b881f03c3da4d4895f894b428e6946.css">
+
+
+<link rel="icon" href="../../../favicon.png" type="image/x-icon">
+
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  <link rel="stylesheet" href="../../../css/syntax.css">
+<link href="../../../mermaid/mermaid.css" type="text/css" rel="stylesheet" />
+<script src="../../../mermaid/mermaid.js"></script>
+
+</head>
+
+<body>
+  <input type="checkbox" style="display: none" id="menu-control" />
+  <main class="flex container">
+
+    <aside class="book-menu fixed">
+      <nav role="navigation">
+<h2 class="book-brand">
+  <a href="">Filecoin Spec</a>
+</h2>
+
+
+
+    
+  
+  
+  
+
+  <style>
+  nav ul a[href$="\2f docs\2f algorithms\2f expected_consensus\2f "] {
+      color: #0b3a53;
+  }
+  </style>
+
+
+  <div>
+  <ul>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro">    
+    
+    <strong>
+    
+        Introduction
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__arch">    
+    
+        Architecture Diagram
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__concepts">    
+    
+        Key Concepts
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__filecoin_vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#intro__process">    
+    
+        Spec Process
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms">    
+    
+    <strong>
+    
+        Algorithms
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__expected_consensus">    
+    
+        Expected Consensus
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_replication">    
+    
+        Proof of Replication
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__proof_of_spacetime">    
+    
+        Proof of Spacetime
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__payment_channels">    
+    
+        Payment Channels
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__vdf">    
+    
+        Verifiable Delay Functions
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#algorithms__crypto">    
+    
+        Cryptographic Primitives
+    
+</a>
+
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems">    
+    
+    <strong>
+    
+        Subsystems
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain">    
+    
+        Blockchain
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components">    
+    
+        Blockchain Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_receiver">    
+    
+        Block Receiver
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_propagator">    
+    
+        Block Propagator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__chain_manager">    
+    
+        Chain Manager
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__components__block_producer">    
+    
+        Block Producer
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__blockchain__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm">    
+    
+        Filecoin VM
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components">    
+    
+        Filecoin VM Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__components__vm_interpreter">    
+    
+        VM Interpreter
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__standard">    
+    
+        Standard Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__vm__actors__singleton">    
+    
+        Singleton Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage">    
+    
+        Storage Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components">    
+    
+        Storage Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__components__storage_provider">    
+    
+        Storage Provider
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__storage__libp2p">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval">    
+    
+        Retrieval Market
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__retrieval__components">    
+    
+        Retrieval Market Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining">    
+    
+        Storage Mining
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__actors">    
+    
+        Storage Mining Actors
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components">    
+    
+        Storage Mining Components
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__mining__components__proof_generator">    
+    
+        Proof Generator
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#subsystems__network">    
+    
+        Network Interface
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<a href="../../../#subsystems__repository">    
+    
+        Repository
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+    <li>
+    
+    </li>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings">    
+    
+    <strong>
+    
+        Listings
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__actors">    
+    
+        Filecoin VM Actors
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__data_structures">    
+    
+        Data Structures
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__components">    
+    
+        Components
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+    <li>
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#listings__libp2p_protocols">    
+    
+        libp2p Protocols
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+    
+    </li>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#glossary">    
+    
+    <strong>
+    
+        Glossary
+    
+    </strong>
+    
+</a>
+
+
+<ul>
+
+</ul>
+
+
+      </li>
+    
+      
+      <li>
+        
+
+
+
+
+
+
+
+
+
+
+
+<a href="../../../#appendix">    
+    
+    <strong>
+    
+        Appendix
+    
+    </strong>
+    
+</a>
+
+
+
+      </li>
+    
+  </ul>
+</div>
+
+
+
+
+
+
+
+
+</nav>
+
+
+  
+<script>
+(function() {
+  var menu = document.querySelector('aside.book-menu nav')
+  addEventListener('beforeunload', function(event) {
+    localStorage.setItem('menu.scrollTop', menu.scrollTop)
+  });
+  menu.scrollTop = localStorage.getItem('menu.scrollTop')
+})()
+</script>
+
+
+
+    </aside>
+
+    <div class="book-page">
+      <header class="align-center justify-between book-header">
+  <label for="menu-control">
+    <img src="../../../svg/menu.svg" alt="Menu" />
+  </label>
+  <strong>
+  
+    
+    Expected Consensus
+  
+</strong>
+</header>
+
+      
+<article class="markdown">
+  <p><strong>This spec describes how the expected consensus (EC) protocol works in general. To read more about Filecoin-specific processes, see:</strong></p>
+
+<ul>
+<li><a href="../mining#mining-blocks">Mining Blocks</a> on how consensus is used in block mining.</li>
+<li><a href="../faults">Faults</a> on slashing.</li>
+<li><a href="../storage-market#the-power-table">Storage market</a> on how the <code>power table</code> is created and maintained.</li>
+<li><a href="../data-structures#block">Block data structure</a> for details on fields and encoding.</li>
+</ul>
+
+<div id="algorithms__expected_consensus__important_concepts_and_definitions"></div><h3>Important concepts and definitions</h3>
+
+<p>Some important concepts relevant to expected consensus are:</p>
+
+<ul>
+<li><a href="../definitions#vdf">Verifiable Delay Function (VDF)</a></li>
+<li><a href="../defintions#vrf">Verifiable Random Function (VRF)</a></li>
+<li><a href="../definitions#tipset">TipSet</a></li>
+<li><a href="../definitions#ticket">Ticket</a></li>
+<li><a href="../defintions#ticket-chain">Ticket Chain</a></li>
+<li><a href="../definitions#height">Height</a>
+
+<ul>
+<li>In the realm of EC, it is worth noting that a new ticket must be produced at every height, and consequently the duration of a round is bounded by the duration of the Verifiable Delay Function that is run to generate a ticket.</li>
+</ul></li>
+<li><a href="../definitions#weight">Weight</a></li>
+<li><a href="../definitions#power-fraction">Power Fraction</a></li>
+<li><a href="../definitions#electionproof">ElectionProof</a></li>
+</ul>
+
+<div id="algorithms__expected_consensus__algorithm"></div><h3>Algorithm</h3>
+
+<p>Expected Consensus (EC) is a probabilistic Byzantine fault-tolerant consensus protocol. At a high
+level, it operates by running a leader election every round in which, on expectation, one
+participant may be eligible to submit a block. EC guarantees that this winner will be anonymous until they reveal themselves by submitting a proof of their election (we call this proof an <code>Election Proof</code>). All valid blocks submitted in a given round form a <code>TipSet</code>. Every block in a TipSet adds weight to its chain. The &lsquo;best&rsquo; chain is the one with the highest weight, which is to say that the fork choice rule is to choose the heaviest known chain. For more details on how to select the heaviest chain, see <a href="#chain-selection">Chain Selection</a>.</p>
+
+<p>The methods below describe the basic algorithm for EC.</p>
+
+<p>Every time a block is received, we first verify whether the block is valid (<code>VerifyBlock</code> is defined in the <a href="../mining#block-validation">mining spec</a>.) If the received block is valid, we add it to our TipSet.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Called when a block is received by this node
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">OnBlockReceived</span><span class="p">(</span><span class="nx">blk</span> <span class="nx">Block</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// The exact definition of VerifyBlock depends on the protocol
+</span><span class="c1"></span>    <span class="c1">// For Filecoin, see mining.md
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">VerifyBlock</span><span class="p">(</span><span class="nx">blk</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ChainTipsMgr</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">blk</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="c1">// Received an invalid block!
+</span><span class="c1"></span><span class="p">}</span></code></pre></div>
+<p>Meanwhile, the mining node runs a mining process to attempt to generate blocks. In <code>Mine</code>, the node identifies the best TipSet in each round and generates a ticket from it. In parallel, it uses a past ticket to try and generate a valid <code>ElectionProof</code> thereby enabling it to mine a new block. If no valid <code>ElectionProof</code> is produced, the miner mines a new ticket atop their old one and tries again at a new height.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">Mine</span><span class="p">(</span><span class="nx">minerKey</span> <span class="nx">PrivateKey</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="nx">r</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">rounds</span> <span class="p">{</span> <span class="c1">// for each round
+</span><span class="c1"></span>        <span class="nx">bestTipset</span><span class="p">,</span> <span class="nx">tickets</span> <span class="o">:=</span> <span class="nx">ChainTipsMgr</span><span class="p">.</span><span class="nf">GetBestTipsetAtRound</span><span class="p">(</span><span class="nx">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="nx">ticket</span> <span class="o">:=</span> <span class="nf">GenerateTicket</span><span class="p">(</span><span class="nx">minerKey</span><span class="p">,</span> <span class="nx">bestTipset</span><span class="p">)</span>
+        <span class="nx">tickets</span><span class="p">.</span><span class="nf">Append</span><span class="p">(</span><span class="nx">ticket</span><span class="p">)</span>
+
+        <span class="c1">// Generate an ElectionProof and check if we win
+</span><span class="c1"></span>        <span class="c1">// Note: even if we don&#39;t win, we want to make a ticket
+</span><span class="c1"></span>        <span class="c1">// in case we need to mine a null round
+</span><span class="c1"></span>        <span class="nx">win</span><span class="p">,</span> <span class="nx">proof</span> <span class="o">:=</span> <span class="nf">CheckIfWinnerAtRound</span><span class="p">(</span><span class="nx">minerKey</span><span class="p">,</span> <span class="nx">r</span><span class="p">,</span> <span class="nx">bestTipset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">win</span> <span class="p">{</span>
+            <span class="nf">GenerateAndBroadcastBlock</span><span class="p">(</span><span class="nx">bestTipset</span><span class="p">,</span> <span class="nx">tickets</span><span class="p">,</span> <span class="nx">proof</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// Even if we don&#39;t win, add our ticket to the tracker in
+</span><span class="c1"></span>            <span class="c1">// case we need to mine on it later.
+</span><span class="c1"></span>            <span class="nx">ChainTipsMgr</span><span class="p">.</span><span class="nf">AddFailedTicket</span><span class="p">(</span><span class="nx">bestTipset</span><span class="p">,</span> <span class="nx">tickets</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>To check if the miner won the round, she runs <code>CheckIfWinnerAtRound</code>. In this method, the miner takes their ticket from a prior round (which round to look at is specified by the randomness lookback parameter), computes an ElectionProof, and returns whether the proof indicates that the miner has won the round. In the pseudocode below, <code>IsProofAWinner</code> is taken from <a href="../mining#block-validation">the mining doc</a>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">const</span> <span class="nx">RandomnessLookback</span> <span class="p">=</span> <span class="mi">1</span> <span class="c1">// Also referred to as &#34;K&#34; in many places
+</span><span class="c1"></span>
+<span class="kd">func</span> <span class="nf">CheckIfWinnerAtRound</span><span class="p">(</span><span class="nx">key</span> <span class="nx">PrivateKey</span><span class="p">,</span> <span class="nx">n</span> <span class="nx">Integer</span><span class="p">,</span> <span class="nx">parentTipset</span> <span class="nx">Tipset</span><span class="p">)</span> <span class="p">(</span><span class="kt">bool</span><span class="p">,</span> <span class="nx">ElectionProof</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">lbt</span> <span class="o">:=</span> <span class="nx">ChainTipsMgr</span><span class="p">.</span><span class="nf">TicketFromRound</span><span class="p">(</span><span class="nx">parentTipset</span><span class="p">,</span> <span class="nx">n</span><span class="o">-</span><span class="nx">RandomnessLookback</span><span class="p">)</span>
+
+  <span class="nx">eproof</span> <span class="o">:=</span> <span class="nf">ComputeElectionProof</span><span class="p">(</span><span class="nx">lbt</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span>
+
+  <span class="nx">minerPower</span> <span class="o">:=</span> <span class="nf">GetPower</span><span class="p">(</span><span class="nx">miner</span><span class="p">)</span>
+  <span class="nx">totalPower</span> <span class="o">:=</span> <span class="nx">state</span><span class="p">.</span><span class="nf">GetTotalPower</span><span class="p">()</span>
+
+  <span class="k">if</span> <span class="nf">IsProofAWinner</span><span class="p">(</span><span class="nx">eproof</span><span class="p">,</span> <span class="nx">minerPower</span><span class="p">,</span> <span class="nx">totalPower</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">True</span><span class="p">,</span> <span class="nx">eproof</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="nx">False</span><span class="p">,</span> <span class="nx">None</span>
+<span class="p">}</span></code></pre></div>
+<p>Note: Validity of blocks beyond appropriate ticket generation (defined below) is defined by the specific protocol using EC. For the Filecoin definition of a valid block, see the <a href="../mining">mining spec</a>.</p>
+
+<p>The EC algorithm can be better understood by looking at its two major components in more detail:</p>
+
+<ul>
+<li><a href="../../../#algorithms__expected_consensus__secret_leader_election">Secret Leader Election</a></li>
+<li><a href="../../../#algorithms__expected_consensus__chain_selection">Chain Selection</a></li>
+</ul>
+
+<p><div id="algorithms__expected_consensus__secret_leader_election"></div>
+<div id="algorithms__expected_consensus__secret_leader_election"></div><h3>Secret Leader Election</h3></p>
+
+<p>Expected Consensus is a consensus protocol that works by electing a miner from a weighted set in proportion to their power. In the case of Filecoin, participants and powers are drawn from the storage <a href="../storage-market#the-power-table">power table</a>, where power is equivalent to storage provided through time.</p>
+
+<p>Leader Election in Expected Consensus must be Secret, Fair and Verifiable. This is achieved through the use of randomness used to run the election. In the case of Filecoin&rsquo;s EC, the blockchain tracks an independent ticket chain. These tickets are used as randomness inputs for Leader Election. Every block generated references an <code>ElectionProof</code> derived from a past ticket. The ticket chain is extended by the miner who generates a new ticket with each attempted election.</p>
+
+<p>In cases in which no winning ticket is found by any miner in a given round (i.e. no block is mined on the network at that height), miners move on to the next ticket in the ticket chain to attempt a new leader election. When this happens, miners should nonetheless generate a new ticket prior to the new leader election, thereby appropriately prolonging the ticket chain (the block chain can never be longer than the ticket chain). This situation is fleshed out in the <a href="#losing-tickets">Losing Tickets</a> section.</p>
+
+<p>In order to pressure the network to converge on a single chain, each miner may only submit one block per round (see: <a href="#slashing"><code>Slashing</code></a>).</p>
+
+<p>TODO: pictures of ticket chain and block chain</p>
+
+<h4>Tickets</h4>
+
+<p>One may think of leader election in EC as a verifiable lottery, in which participants win in proportion to the power they have within the network.</p>
+
+<p>A ticket is drawn from the past at the beginning of each new round, and a new ticket is generated in every round. Tickets are chained independently of the main blockchain. A ticket only depends on the ticket before it, and not any other data in the block. Nonetheless, in Filecoin, every block header contains one or more new tickets, thereby extending the ticket chain. A miner generates a new ticket in their block for every ticket they scratch running leader election, thereby ensuring the ticket chain is at least as long as the block chain.</p>
+
+<p>At a high-level, tickets must do the following:</p>
+
+<ul>
+<li>Ensure leader secrecy &ndash; meaning a block producer will not be known until they release their block to the network.</li>
+<li>Prove leader election &ndash; meaning a block producer can be verified by any participant in the network.</li>
+<li>Prove appropriate delay between drawings — thereby preventing leaders from &ldquo;rushing&rdquo; the protocol by releasing blocks early (at the expense of fairness for miners with worse connectivity).</li>
+
+<li><p>Ensure a single drawing per round — derived in part from the above, thereby preventing miners from grinding on tickets (e.g. by repeatedly drawing new tickets in the hopes of winning) within a round.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">ticket = {TODO} where (proof, value) &lt;-- VDF(SK, x) for some seed x</code></pre></div></li>
+</ul>
+
+<p>You can find the Ticket data structure <a href="../data-structures#tickets">here</a>.</p>
+
+<p>In practice, EC defines two different fields within a block:</p>
+
+<ul>
+<li>A <code>Tickets</code> array — this stores new tickets generated during this block generation attempt. It proves appropriate delay. It is from this array that miners will sample randomness to run leader election in <code>K</code> rounds. See <a href="#ticket-generation">Ticket generation</a>.</li>
+<li>An <code>ElectionProof</code> — this stores a proof that a given miner scratched a winning lottery ticket using the appropriate ticket <code>K</code> rounds back. It proves that the leader was elected in this round. See <a href="#checking-election-results">Checking election results</a>.</li>
+</ul>
+
+<p>On expectation, the <code>Tickets</code> array will contain a single ticket. For cases in which it contains more than one, see <a href="#losing-tickets">Losing Tickets</a>.</p>
+
+<pre><code>On the two uses of tickets.
+
+Tickets serve two main purposes.
+
+1) As a proof that blocks were appropriately delayed. This both prevents miners grinding through tickets and a winner rushing the protocol by publishing
+blocks as fast as possible (thereby penalizing poorly connected miners).
+
+This is a result of a new ticket being generated by the miner for every leader election
+attempt (using a ticket from the past). This ticket is generated using the ticket generated at the last height (either
+from the prior block, or the prior &quot;losing&quot; ticket).
+
+2) As a source of randomness used to prove that a leader was correctly elected.
+
+This is done by generating an 'ElectionProof' derived from the ticket sampled K rounds
+back in the ticket chain.
+
+But why the randomness lookback?
+
+The randomness lookback helps turn independent lotteries (ticket drawings from a block one round back)
+into a global lottery instead. Rather than having a distinct chance of winning or losing
+for each potential fork in a given round, a miner will either win on all or lose on all
+forks descended from the block in which the ticket is sampled.
+
+This is useful as it reduces opportunities for grinding, across forks or sybil identities.
+
+However this introduces a tradeoff:
+- The randomness lookback means that a miner can know K rounds in advance that they will win,
+decreasing the cost of running a targeted attack (given they have local predictability).
+- It means electionProofs are stored separately from new tickets on a block, taking up
+more space on-chain.
+</code></pre>
+
+<h5>Ticket generation</h5>
+
+<p>This section discusses how tickets are generated for the <code>Tickets</code> array. For how tickets are validated, see <a href="../mining#ticket-validation">ticket validation</a>.</p>
+
+<p>At round <code>N</code>, new tickets are generated using tickets drawn from the <a href="#tipsets">TipSet</a> at round <code>N-1</code>. This ensures the miner cannot publish a new block (corresponding to the <code>ElectionProof</code> generated by a winning ticket <code>K</code> rounds back) until the correct round. Because a Tipset can contain multiple blocks (see <a href="#chain-selection">Chain Selection</a> below), the smallest ticket in the Tipset must be drawn otherwise the block will be invalid.</p>
+
+<p>TODO: pictures of TipSet ticket drawing</p>
+
+<p>The miner runs the prior ticket through a Verifiable Random Function (VRF) to get a new unique output. This output is then used as input into a Verifiable Delay Function (VDF), with the VRFProof, VDFProof and VDFOutput generating a new ticket for future use.</p>
+
+<p>The VRF&rsquo;s deterministic output adds entropy to the ticket chain, limiting a miner&rsquo;s ability to alter one block to influence a future ticket (given a miner does not know who will win a given round in advance).
+The VDF approximates clock synchrony for miners, thereby ensuring miners have waited an appropriate delay ahead of drawing a new ticket. It ensures network liveness, allowing miners to run a new election if no winner is found in a given round.
+Finally, it establishes a lower-bound delay between production of new blocks at different heights. This helps ensure fairness, in that miners with lesser connectivity are not penalized and have a chance to produce blocks.
+A default value for the VDF delay could be 30 seconds, given estimated network propagation times.</p>
+
+<p>Succinctly, the process of crafting a new <code>Ticket</code> in round <code>N</code> is as follows. We use:</p>
+
+<ul>
+<li>The ECVRF algorithm from <a href="https://tools.ietf.org/html/draft-irtf-cfrg-vrf-04#page-10">Goldberg et al. Section 5</a>, with:
+
+<ul>
+<li>Sha256 for our hashing function</li>
+<li>Secp256k1 for our curve</li>
+<li>Note that the operation type in step 2.1 is necessary to prevent an adversary from guessing an election proof for a miner ahead of time.</li>
+</ul></li>
+
+<li><p>The TODO VDF impl.</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Input: parentTickets at round N-1, miner&#39;s private key SK
+Output: newTicket
+
+0. Prepare new ticket
+i. newTicket &lt;-- New()
+1. Draw prior ticket
+i. # take the last ticket for each parent &#39;Tickets&#39; array
+    lastTickets &lt;-- map(parentTickets, fun(x): x.last)
+ii. # draw the smallest ticket
+    parentTicket &lt;-- min(sortedTickets)
+2. Run it through VRF and get determinstic output
+i. # take the VDFOutput of that ticket as input, specifying the personalization (see data-structures)
+        input &lt;-- VRFPersonalization.Ticket | parentTicket.VDFOutput
+ii. # run it through the VRF and store the VRFProof in the new ticket
+        newTicket.VRFProof &lt;-- ECVRF_prove(SK, input)
+iii. # draw a deterministic output from this
+        VRFOutput &lt;-- ECVRF_proof_to_hash(newTicket.VRFProof)
+3. Run that deterministic output through a VDF
+i. # run eval with our VDF and its evaluation k on VRFOutput
+        y, pi &lt;-- VDF_eval(ek, VRFOutput)
+ii. # Store the output and proof in our ticket
+        newTicket.VDFOutput &lt;-- y
+        newTicket.VDFProof  &lt;-- pi
+4. Return the new ticket</code></pre></div></li>
+</ul>
+
+<h4>Running a leader election</h4>
+
+<p>Now, a miner must also check whether they are eligible to mine a block in this round. For how Election Proofs are validated, see <a href="../mining#election-validation">election validation</a>.</p>
+
+<p>To do so, the miner will use tickets from K rounds back as randomness to uniformly draw a value from 0 to 1. Comparing this value to their power, they determine whether they are eligible to mine. A user&rsquo;s <code>power</code> is defined as the ratio of the amount of storage they proved as of their last PoSt submission to the total storage in the network as of the current block.</p>
+
+<p>Succinctly, the process of crafting a new <code>ElectionProof</code> in round <code>N</code> is as follows. We use:</p>
+
+<ul>
+<li>The ECVRF algorithm (must yield a pseudorandom, deterministic output) from <a href="https://tools.ietf.org/html/draft-irtf-cfrg-vrf-04#page-10">Goldberg et al. Section 5</a>, with:
+
+<ul>
+<li>Sha256 for our hashing function</li>
+<li>Secp256k1 for our curve</li>
+</ul></li>
+</ul>
+
+<p>Note: We draw the miner power from the prior round. This means that if a miner wins a block on their ProvingPeriodEnd even if they have not yet resubmitted a PoSt, they retain their power (until the next round).</p>
+
+<p>At round N:</p>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Input: parentTickets from N-K, miner&#39;s public key PK, miner&#39;s secret key SK, the Storage Market actor S
+Output: 1 or 0
+
+0. Prepare new election proof
+    i. newEP &lt;-- New()
+1. Determine the miner&#39;s power fraction
+    i. # Determine total storage this round
+        S &lt;-- storageMarket(N)
+        p_n &lt;-- S.GetTotalStorage()
+    ii. # Determine own power at prior tipSet
+        p_m &lt;-- GetMinersPowerAt(N-1, self.PK)
+    iii. # Get power fraction
+          p_f &lt;-- p_m/p_n
+2. Draw parentTicket from K blocks back (see ticket creation above for example, using 1 block back) 
+3. Run it through VRF and get determinstic output
+    i. # take the VDFOutput of that ticket as input, specified for the appropriate operation type
+        input &lt;-- VRFPersonalization.ElectionProof | parentTicket.VDFOutput
+    ii. # run it through the VRF and store the VRFProof in the new ticket
+        newEP.VRFProof &lt;-- ECVRF_prove(SK, input)
+    iii. # draw a deterministic, pseudorandom output from this
+        VRFOutput &lt;-- ECVRF_proof_to_hash(newEP.VRFProof)
+3. Determine if the miner drew a winning lottery ticket
+    # Conceptually we are mapping the pseudorandom, deterministic VRFOutput onto [0,1] by dividing by 2^HashLen (64 Bytes using Sha256) and comparing that to the miner&#39;s power (portion of network storage).
+    # In practice, we actually multiply the power fraction by 2^HashLen for comparison with the ticket value in order to avoid dealing with floats.
+    i.  # Map the miner&#39;s power onto [0, 2^HashLen] (64 Bytes using sha256)
+        normalized_power &lt;-- p_f * 2^HashLen
+    ii. # Compare the miner&#39;s power fraction to the value of the ticket drawn: more power means win more often.
+        # winning ticket
+        if readLittleEndian(VRFOutput) &lt;= normalized_power
+            return newEP
+        # otherwise parentTicket is not a winning lottery ticket
+        else 
+            Return 0</code></pre></div>
+<p>If the miner scratches a winning ticket in this round, it can use newEP, along with a newTicket to generate and publish a new block (see <a href="#block-generation">Block Generation</a>). Otherwise, it waits to hear of another block generated in this round.</p>
+
+<p>It is important to note that every block contains two artifacts: one, a ticket derived from last block&rsquo;s ticket to prove that they have waited the appropriate delay, and two, an election proof derived from the ticket <code>K</code> rounds back used to run leader election.</p>
+
+<h5>Losing Tickets</h5>
+
+<p>In the case that everybody draws a losing ticket in a given round (i.e. no miner is eligible to produce a block), every miner can run leader election again by &ldquo;scratching&rdquo; (attempting to generate a new <code>ElectionProof</code> from) the next ticket in the chain. That is, miners will now use the ticket sampled <code>K-1</code> rounds back to generate a new <code>ElectionProof</code>. They can then compare that proof with their current power fraction. This is repeated until a miner scratches a winning ticket and can publish a block (see <a href="#block-generation">Block Generation</a>).</p>
+
+<p>In addition to each attempted <code>ElectionProof</code> generation, the miner will need to extend the ticket chain by generating another new ticket. They use the ticket they generated in the prior round, rather than the prior block&rsquo;s (as is normally used). This proves appropriate delay (given that finding a winning Ticket has taken multiple rounds).</p>
+
+<p>Thus, each time it is discovered that nobody has won in a given round, every miner should append a new ticket to their would-be block&rsquo;s <code>Ticket</code> array. This continues until some miner finds a winning ticket (see below), ensuring that the ticket chain remains at least as long as the block chain.</p>
+
+<p>The length of repeated losing tickets in the ticket chain (equivalent to the length of generated tickets referenced by a single block, or the length of the <code>Tickets</code> array) decreases exponentially in the number of repeated losing tickets. In the unlikely case the number of losing tickets drawn by miners grows larger than the randomness lookback <code>K</code> (i.e. if a miner runs out of existing tickets on the ticket chain for use as randomness), a miner should proceed as usual using new tickets generated in this epoch for randomness. This has no impact on the protocol safety/validity.</p>
+
+<p>New blocks (with multiple tickets) will have a few key properties:</p>
+
+<ul>
+<li>All tickets in the <code>Tickets</code> array are signed by the same miner &ndash; to avoid grinding through out-of-band collusion between miners exchanging tickets.</li>
+<li>The <code>ElectionProof</code> was correctly generated from the ticket <code>K-|Tickets|</code> (with <code>|Tickets|</code> the length of the <code>Tickets</code> array) rounds back.</li>
+</ul>
+
+<p>This means that valid <code>ElectionProof</code>s can be generated from tickets in the middle of the <code>Tickets</code> array.</p>
+
+<h5>A note on miners&#39; &#39;power fraction&#39;</h5>
+
+<p>The portion of blocks a given miner generates (and so the block rewards they earn) is proportional to their <code>Power Fraction</code> over time.</p>
+
+<p>This means miners should not be able to mine using power they have not yet proven. Conversly, it is acceptable for miners to mine with a slight delay between their proving storage and that proven storage being reflected in leader election. This is reflected in the height at which the <a href="../actors#storage-market-actor">storage market actor</a>&rsquo;s <code>GetTotalStorage</code> and <code>PowerLookup</code> methods are called, as outlined <a href="#checking-election-results">above</a>.</p>
+
+<p>The miner retrieves the appropriate state of the <code>storage market actor</code> at the height at which they submitted their last valid PoSt: that way, they account for storage which was already proven valid, i.e. they are mining with the power they had in their last proving period. That is the miner will get their own power at height <code>miner.ProvingPeriodEnd - miner.ProvingPeriod</code>.</p>
+
+<p>This power is then compared to the total network power at the current height, in order to account for recent power changes from other miners (and so all miners attempting to mine in this round share 100% of the power).</p>
+
+<p>To illustrate this, an example:</p>
+
+<p>Miner M1 has a provingPeriod of 30. M1 submits a PoST at height 39. Their next <code>provingPeriodEnd</code> will be 69, but M1 can submit a new PoST at any height X, for X in (39, 69]. Let&rsquo;s assume X is 67.</p>
+
+<p>At height Y in (39, 67], M1 will attempt to generate an <code>ElectionProof</code> using the storage market actor from height 39 for their own power (and an actor from Y for total network power); at height 68, M1 will use the storage market actor from height 67 for their own power, and the storage market actor from height 68 for total power and so on.</p>
+
+<h4>Block Generation</h4>
+
+<p>Once a miner has a winning election proof generated over <code>i</code> rounds and <code>i</code> corresponding tickets, they may create a block. For more on this, see the <a href="../mining#block-creation">Mining spec</a>.</p>
+
+<p><div id="algorithms__expected_consensus__chain_selection"></div>
+<div id="algorithms__expected_consensus__chain_selection"></div><h3>Chain Selection</h3></p>
+
+<p>Just as there can be 0 miners win in a round, multiple miners can be elected in a given round. This in turn means multiple blocks can be created in a round. In order to avoid wasting valid work done by miners, EC makes use of all valid blocks generated in a round.</p>
+
+<h4>Tipsets</h4>
+
+<p>All valid blocks generated in a round form a <code>TipSet</code> that participants will attempt to mine off of in the subsequent round (see above). TipSets are valid so long as:</p>
+
+<ul>
+<li>All blocks in a TipSet have the same parent TipSet</li>
+<li>All blocks in a TipSet have the same number of tickets in their <code>Tickets</code> array</li>
+</ul>
+
+<p>These conditions imply that all blocks in a TipSet were mined at the same height. This rule is key to helping ensure that EC converges over time. While multiple new blocks can be mined in a round, subsequent blocks all mine off of a TipSet bringing these blocks together. The second rule means blocks in a TipSet are mined in a same round.</p>
+
+<p>The blocks in a tipset have no defined order in representation. During state computation, blocks in a tipset are processed in order of block ticket, breaking ties with the block CID bytes.</p>
+
+<p>Due to network propagation delay, it is possible for a miner in round N+1 to omit valid blocks mined at round N from their TipSet. This does not make the newly generated block invalid, it does however reduce its weight and chances of being part of the canonical chain in the protocol.</p>
+
+<p><div id="algorithms__expected_consensus__chain_weighting"></div>
+<h4>Chain Weighting</h4></p>
+
+<p>It is possible for forks to emerge naturally in Expected Consensus. EC relies on weighted chains in order to quickly converge on &lsquo;one true chain&rsquo;, with every block adding to the chain&rsquo;s weight. This means the heaviest chain should reflect the most amount of work performed, or in Filecoin&rsquo;s case, the most storage provided.</p>
+
+<p>The weight at each block is equal to its <code>ParentWeight</code> plus that block&rsquo;s delta weight. Delta
+weight is a term P times the sum of a constant <code>V</code> times the number of blocks included in that TipSet in the given round (can only be calculated in the next round), and <code>X</code> - a function of the total power in the network as reported in the Power Table. P will be equal to some term P_i^P_n and seeks to punish selfish mining. So we have:</p>
+
+<p><code>Weight = ParentWeight + P(V*NumBlocksMinedInThisRound + X)</code></p>
+
+<p>The weight should be rounded down to its fourth decimal at each height (i.e. each time it is recalculated).</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Note that <span class="k">if</span> your implementation does not allow <span class="k">for</span> rounding to the fourth decimal, miners should apply the <span class="o">[</span>tie-breaker below<span class="o">](</span><span class="c1">#selecting-between-tipsets-with-equal-weight). Weight changes will be on the order of single digit numbers on expectation, so this should not have an outsized impact on chain consensus across implementations.</span></code></pre></div>
+<p>The exact value for these parameters remain to be determined, but for illustration, we can set:</p>
+
+<ul>
+<li><code>V = 2 * number of blocks in the round</code></li>
+<li><code>X = log(TotalPower in Power Table)</code></li>
+<li><code>P_i = .87</code></li>
+<li><code>P_n = the number of tickets in this block's Ticket array</code> if that number is  &gt;= 3, 0 otherwise.</li>
+</ul>
+
+<p><code>ParentWeight</code> is the aggregate chain weight of a given block&rsquo;s parent set. It is calculated as
+the <code>ParentWeight</code> of any of its parent blocks (all blocks in a given TipSet should have
+the same <code>ParentWeight</code> value) plus the delta weight of each parent. To make the
+computation a bit easier, a block&rsquo;s <code>ParentWeight</code> is stored in the block itself (otherwise
+potentially long chain scans would be required to compute a given block&rsquo;s weight).</p>
+
+<h4>Selecting between TipSets with equal weight</h4>
+
+<p>When selecting between TipSets of equal weight, a miner chooses the one with the smallest min ticket (by bytewise comparison).</p>
+
+<p>In the case where two TipSets of equal weight have the same min ticket, the miner will compare the next smallest ticket (and select the TipSet with the next smaller ticket). This continues until one TipSet is selected.</p>
+
+<p>The above case may happen in situations under certain block propagation conditions. Assume three blocks B, C, and D have been mined (by miners 1, 2, and 3 respectively) off of block A, with minTicket(B) &lt; minTicket&copy; &lt; minTicket (D).</p>
+
+<p>Miner 1 outputs their block B and shuts down. Miners 2 and 3 both receive B but not each others&rsquo; blocks. We have miner 2 mining a TipSet made of B and C and miner 3 mining a TipSet made of B and D. If both succesfully mine blocks now, other miners in the network will receive new blocks built off of TipSets with equal weight and the same smallest ticket (that of block B). They should select the block mined atop [B, C] since minTicket&copy; &lt; minTicket(D).</p>
+
+<p>The probability that two TipSets with different blocks would have all the same tickets can be considered negligible: this would amount to finding a collision between two 256-bit (or more) collision-resistant hashes.</p>
+
+<h4>Slashing</h4>
+
+<p>See the <a href="../faults">Faults spec</a> for implementation details.</p>
+
+<p>Due to the existence of potential forks, a miner can try to unduly influence protocol fairness. This means they may choose to disregard the protocol in order to gain an advantage over the power they should normally get from their storage on the network. A miner should be slashed if they are provably deviating from the honest protocol.</p>
+
+<p>This is detectable when a miner submits two blocks that satisfy either of the following &ldquo;slashing conditions&rdquo;:</p>
+
+<p>(1) one block contains at least one ticket in its ticket array generated at the same round as one of the tickets in the other block&rsquo;s ticket array.
+(2) one block&rsquo;s parent is a TipSet that could have validly included the other block according to TipSet validity rules, however the parent of the first block does not include the other block.</p>
+
+<ul>
+<li>While it cannot be proven that a miner omits known blocks from a TipSet in general (i.e. network latency could simply mean the miner did not receive a particular block) in this case it can be proven because a miner must be aware of a block they mined in a previous round.</li>
+</ul>
+
+<p>Any node that detects this occurring should take both block headers, and call <a href="../actors#slashconsensusfault"><code>storagemarket.SlashConsensusFault</code></a>. The network will then take all of that node&rsquo;s collateral, give a portion of it to
+the reporter, and keep the rest.</p>
+
+<p>TODO: It is unclear that rewarding the reporter any more than gas fees is the right thing to do. Needs thought. Tracking issue: <a href="https://github.com/filecoin-project/specs/issues/159">https://github.com/filecoin-project/specs/issues/159</a></p>
+
+<p>Note: One may wonder what prevents miners from simply breaking up their power into multiple unlinkable miner actors  (or sybils) that will be able to mine on multiple chains without being caught mining at the same round at the same time. Read more about this <a href="https://github.com/filecoin-project/consensus/issues/32">here</a>.</p>
+
+<div id="algorithms__expected_consensus__implementation_notes"></div><h3>Implementation Notes</h3>
+
+<ul>
+<li>When selecting messages from the mempool to include in the block, be aware that other miners may also generate blocks during this round, and to maximize fee earnings it may be best to select some messages at random (second in a duplicate earns no fees).</li>
+</ul>
+
+<div id="algorithms__expected_consensus__open_questions"></div><h3>Open Questions</h3>
+
+<ul>
+<li>Parameter K</li>
+<li>VDF difficulty adjustment</li>
+</ul>
+
+</article>
+
+      
+
+      
+    </div>
+
+    
+  
+  
+
+
+  </main>
+  
+  
+  
+</body>
+
+</html>

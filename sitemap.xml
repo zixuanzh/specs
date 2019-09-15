@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/docs/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/about/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/appendix/address/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/appendix/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/arch/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/components/block_producer/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/components/block_propagator/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/components/block_receiver/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/components/chain_manager/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/listings/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/contributing/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/crypto/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/listings/data_structures/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/expected_consensus/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/fip/</loc>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/filecoin_vm/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/listings/actors/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/actors/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/glossary/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/concepts/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/listings/libp2p_protocols/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/blockchain/libp2p/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/storage/libp2p/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/listings/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/network/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/related_resources/network_tooling/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/payment_channels/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/mining/components/proof_generator/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/proof_of_replication/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/proof_of_spacetime/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/related_resources/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/repository/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/related_resources/research_portal/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/retrieval/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/retrieval/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/appendix/sharray/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/crypto/signatures/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/actors/singleton/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/actors/standard/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/storage/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/storage/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/mining/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/mining/actors/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/mining/components/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/storage/components/storage_provider/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/intro/process/related_resources/testing/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/algorithms/vdf/</loc>
+  </url>
+  
+  <url>
+    <loc>/docs/subsystems/vm/components/vm_interpreter/</loc>
+  </url>
+  
+</urlset>
