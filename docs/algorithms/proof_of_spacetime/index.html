@@ -1651,9 +1651,9 @@ Only faults which have been reported at challenge time, will be accounted for. I
 </span><span class="c1"></span><span class="kd">func</span> <span class="nf">GeneratePoSt</span><span class="p">(</span><span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">sectors</span> <span class="nx">SectorSet</span><span class="p">,</span> <span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">faults</span> <span class="nx">FaultSet</span><span class="p">)</span> <span class="nx">PoStProof</span> <span class="p">{</span>
     <span class="c1">// Generate the Merkle Inclusion Proofs + Faults
 </span><span class="c1"></span>
+    <span class="nx">challenges</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">faults</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nf">SortAsc</span><span class="p">(</span><span class="nf">GetSectorIds</span><span class="p">(</span><span class="nx">sectors</span><span class="p">)))</span>
+    <span class="nx">challengedSectors</span> <span class="o">:=</span> <span class="p">[]</span>
     <span class="nx">inclusionProofs</span> <span class="o">:=</span> <span class="p">[]</span>
-    <span class="nx">sectorsSorted</span> <span class="o">:=</span> <span class="p">[]</span>
-    <span class="nx">challenges</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">faults</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">sectors</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">challenges</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
         <span class="nx">challenge</span> <span class="o">:=</span> <span class="nx">challenges</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
@@ -1666,46 +1666,45 @@ Only faults which have been reported at challenge time, will be accounted for. I
         <span class="p">}</span>
 
         <span class="nx">inclusionProofs</span><span class="p">[</span><span class="nx">n</span><span class="p">]</span> <span class="p">=</span> <span class="nx">inclusionProof</span>
-        <span class="nx">sectorsSorted</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">sectors</span><span class="p">[</span><span class="nx">challenge</span><span class="p">.</span><span class="nx">Sector</span><span class="p">]</span>
+        <span class="nx">challengedSectors</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">sectors</span><span class="p">[</span><span class="nx">challenge</span><span class="p">.</span><span class="nx">Sector</span><span class="p">]</span>
     <span class="p">}</span>
 
     <span class="c1">// Generate the snark
-</span><span class="c1"></span>    <span class="nx">snark_proof</span> <span class="o">:=</span> <span class="nf">GeneratePoStSnark</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">challenges</span><span class="p">,</span> <span class="nx">sectorsSorted</span><span class="p">,</span> <span class="nx">inclusionProofs</span><span class="p">)</span>
+</span><span class="c1"></span>    <span class="nx">snarkProof</span> <span class="o">:=</span> <span class="nf">GeneratePoStSnark</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">challenges</span><span class="p">,</span> <span class="nx">challengedSectors</span><span class="p">,</span> <span class="nx">inclusionProofs</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nx">snark_proof</span>
+    <span class="k">return</span> <span class="nx">snarkProof</span>
 <span class="p">}</span></code></pre></div>
 <h4 id="verification">Verification</h4>
 
 <p><code>VerifyPoSt</code> is the functional counterpart to <code>GeneratePoSt</code>. It takes all of <code>GeneratePoSt</code>&rsquo;s output, along with those of <code>GeneratePost</code>&rsquo;s inputs required to identify the claimed proof. All inputs are required because verification requires sufficient context to determine not only that a proof is valid but also that the proof indeed corresponds to what it purports to prove.</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Verify a PoSt.
 </span><span class="c1"></span><span class="kd">func</span> <span class="nf">VerifyPoSt</span><span class="p">(</span><span class="nx">sectorSize</span> <span class="nx">BytesAmount</span><span class="p">,</span> <span class="nx">sectors</span> <span class="nx">SectorSet</span><span class="p">,</span> <span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">proof</span> <span class="nx">PoStProof</span><span class="p">,</span> <span class="nx">faults</span> <span class="nx">FaultSet</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-    <span class="nx">challenges</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">faults</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">sectors</span><span class="p">))</span>
-    <span class="nx">sectorsSorted</span> <span class="o">:=</span> <span class="p">[]</span>
+    <span class="nx">challenges</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">faults</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nf">SortAsc</span><span class="p">(</span><span class="nf">GetSectorIds</span><span class="p">(</span><span class="nx">sectors</span><span class="p">)))</span>
+    <span class="nx">challengedSectors</span> <span class="o">:=</span> <span class="p">[]</span>
 
     <span class="c1">// Match up commitments with challenges
 </span><span class="c1"></span>    <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">challenges</span><span class="p">);</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-        <span class="nx">challenge</span> <span class="o">:=</span> <span class="nx">challenges</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
-        <span class="nx">sectorsSorted</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">sectors</span><span class="p">[</span><span class="nx">challenge</span><span class="p">.</span><span class="nx">Sector</span><span class="p">]</span>
+        <span class="nx">challengedSectors</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nx">sectors</span><span class="p">[</span><span class="nx">challenges</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">Sector</span><span class="p">]</span>
     <span class="p">}</span>
 
     <span class="c1">// Verify snark
-</span><span class="c1"></span>    <span class="k">return</span> <span class="nf">VerifyPoStSnark</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">challenges</span><span class="p">,</span> <span class="nx">sectorsSorted</span><span class="p">)</span>
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nf">VerifyPoStSnark</span><span class="p">(</span><span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">challenges</span><span class="p">,</span> <span class="nx">challengedSectors</span><span class="p">)</span>
 <span class="p">}</span></code></pre></div>
 <h4 id="types">Types</h4>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// The random challenge seed, provided by the chain.
 </span><span class="c1"></span><span class="nx">Seed</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="kt">byte</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Challenge</span> <span class="kd">struct</span> <span class="p">{</span>
-    <span class="nx">Sector</span> <span class="nx">Uint</span>
+    <span class="nx">Sector</span> <span class="nx">SectorID</span>
     <span class="nx">Leaf</span> <span class="nx">Uint</span>
 <span class="p">}</span></code></pre></div>
 <h4 id="challenge-derivation">Challenge Derivation</h4>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Derive the full set of challenges for PoSt.
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">faults</span> <span class="nx">FaultSet</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sectorCount</span> <span class="nx">Uint</span><span class="p">)</span> <span class="p">[</span><span class="nx">POST_CHALLENGES_COUNT</span><span class="p">]</span><span class="nx">Challenge</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">DerivePoStChallenges</span><span class="p">(</span><span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">faults</span> <span class="nx">FaultSet</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sortedSectors</span> <span class="p">[]</span><span class="nx">SectorID</span><span class="p">)</span> <span class="p">[</span><span class="nx">POST_CHALLENGES_COUNT</span><span class="p">]</span><span class="nx">Challenge</span> <span class="p">{</span>
     <span class="nx">challenges</span> <span class="o">:=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="nx">n</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">n</span> <span class="p">&lt;</span> <span class="nx">POST_CHALLENGES_COUNT</span><span class="p">;</span> <span class="nx">n</span><span class="o">++</span> <span class="p">{</span>
         <span class="nx">attemptedSectors</span> <span class="o">:=</span> <span class="p">{</span><span class="nx">SectorID</span><span class="p">:</span><span class="kt">bool</span><span class="p">}</span>
         <span class="nx">while</span> <span class="nx">challenges</span><span class="p">[</span><span class="nx">n</span><span class="p">]</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-            <span class="nx">challenge</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenge</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">faults</span><span class="p">,</span> <span class="nx">attempt</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">sectorCount</span><span class="p">)</span>
+            <span class="nx">challenge</span> <span class="o">:=</span> <span class="nf">DerivePoStChallenge</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">attempt</span><span class="p">,</span> <span class="nx">sectorSize</span><span class="p">,</span> <span class="nx">sortedSectors</span><span class="p">)</span>
 
             <span class="c1">// check if we landed in a faulty sector
 </span><span class="c1"></span>            <span class="k">if</span> <span class="p">!</span><span class="nx">faults</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nx">challenge</span><span class="p">.</span><span class="nx">Sector</span><span class="p">)</span> <span class="p">{</span>
@@ -1716,7 +1715,7 @@ Only faults which have been reported at challenge time, will be accounted for. I
             <span class="c1">// invalid challenge, regenerate
 </span><span class="c1"></span>            <span class="nx">attemptedSectors</span><span class="p">[</span><span class="nx">challenge</span><span class="p">.</span><span class="nx">Sector</span><span class="p">]</span> <span class="p">=</span> <span class="kc">true</span>
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">attemptedSectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nx">sectorCount</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nx">attemptedSectors</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="nx">sortedSectors</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;All sectors are faulty&#34;</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -1726,17 +1725,19 @@ Only faults which have been reported at challenge time, will be accounted for. I
 <span class="p">}</span>
 
 <span class="c1">// Derive a single challenge for PoSt.
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">DerivePoStChallenge</span><span class="p">(</span><span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">n</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">attempt</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sectorCount</span> <span class="nx">Uint</span><span class="p">)</span> <span class="nx">Challenge</span> <span class="p">{</span>
-    <span class="nx">n_bytes</span> <span class="o">:=</span> <span class="nf">WriteUintToLittleEndian</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
-    <span class="nx">data</span> <span class="o">:=</span> <span class="nf">concat</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">n_bytes</span><span class="p">,</span> <span class="nf">WriteUintToLittleEndian</span><span class="p">(</span><span class="nx">attempt</span><span class="p">))</span>
-    <span class="nx">challenge_bytes</span> <span class="o">:=</span> <span class="nf">blake2b</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">DerivePoStChallenge</span><span class="p">(</span><span class="nx">seed</span> <span class="nx">Seed</span><span class="p">,</span> <span class="nx">n</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">attempt</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sectorSize</span> <span class="nx">Uint</span><span class="p">,</span> <span class="nx">sortedSectors</span> <span class="p">[]</span><span class="nx">SectorID</span><span class="p">)</span> <span class="nx">Challenge</span> <span class="p">{</span>
+    <span class="nx">nBytes</span> <span class="o">:=</span> <span class="nf">WriteUintToLittleEndian</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span>
+    <span class="nx">data</span> <span class="o">:=</span> <span class="nf">concat</span><span class="p">(</span><span class="nx">seed</span><span class="p">,</span> <span class="nx">nBytes</span><span class="p">,</span> <span class="nf">WriteUintToLittleEndian</span><span class="p">(</span><span class="nx">attempt</span><span class="p">))</span>
+    <span class="nx">challengeBytes</span> <span class="o">:=</span> <span class="nf">blake2b</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
 
-    <span class="nx">sector_challenge</span> <span class="o">:=</span> <span class="nf">ReadUintLittleEndian</span><span class="p">(</span><span class="nx">challenge_bytes</span><span class="p">[</span><span class="mf">0..8</span><span class="p">])</span>
-    <span class="nx">leaf_challenge</span> <span class="o">:=</span> <span class="nf">ReadUintLittleEndian</span><span class="p">(</span><span class="nx">challenge_bytes</span><span class="p">[</span><span class="mf">8..16</span><span class="p">])</span>
+    <span class="nx">sectorChallenge</span> <span class="o">:=</span> <span class="nf">ReadUintLittleEndian</span><span class="p">(</span><span class="nx">challengeBytes</span><span class="p">[</span><span class="mf">0..8</span><span class="p">])</span>
+    <span class="nx">leafChallenge</span> <span class="o">:=</span> <span class="nf">ReadUintLittleEndian</span><span class="p">(</span><span class="nx">challengeBytes</span><span class="p">[</span><span class="mf">8..16</span><span class="p">])</span>
+
+    <span class="nx">sectorIdx</span> <span class="o">:=</span> <span class="nx">sectorChallenge</span> <span class="o">%</span> <span class="nx">sectorCount</span>
 
     <span class="k">return</span> <span class="nx">Challenge</span> <span class="p">{</span>
-        <span class="nx">Sector</span><span class="p">:</span> <span class="nx">sector_challenge</span> <span class="o">%</span> <span class="nx">sectorCount</span><span class="p">,</span>
-        <span class="nx">Leaf</span><span class="p">:</span> <span class="nx">leaf_challenge</span> <span class="o">%</span> <span class="p">(</span><span class="nx">sectorSize</span> <span class="o">/</span> <span class="nx">NODE_SIZE</span><span class="p">),</span>
+        <span class="nx">Sector</span><span class="p">:</span> <span class="nx">sortedSectors</span><span class="p">[</span><span class="nx">sectorIdx</span><span class="p">],</span>
+        <span class="nx">Leaf</span><span class="p">:</span> <span class="nx">leafChallenge</span> <span class="o">%</span> <span class="p">(</span><span class="nx">sectorSize</span> <span class="o">/</span> <span class="nx">NODE_SIZE</span><span class="p">),</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></div>
 <h3 id="post-circuit">PoSt Circuit</h3>
